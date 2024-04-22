@@ -1,0 +1,13 @@
+module.exports = function(router){
+    var HomeController = require('../Controller/HomeController')
+    var ProductController = require('../Controller/ProductController')
+    router.get('/',HomeController.index);
+    router.get('/login.html',HomeController.pageLogin);
+    router.post('/loginPost',HomeController.login);
+    router.get('/register.html',HomeController.pageCreate);
+    router.post('/registerPost',HomeController.createAccount);
+    router.get('/logout',HomeController.logout);
+    //
+    router.get('/product',ProductController.index);
+}
+
