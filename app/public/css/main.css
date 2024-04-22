@@ -5791,3 +5791,14 @@ label {
     color: #ffba00; }
 
 /*# sourceMappingURL=main.css.map */
+.main-nav-list .collapse {
+  display: none;
+  transition: opacity 1s ease;
+  opacity: 0;
+}
+
+.main-nav-list:hover > .collapse,
+.main-nav-list:focus > .collapse {
+  display: block;
+  opacity: 1;
+}

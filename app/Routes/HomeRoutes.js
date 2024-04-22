@@ -9,5 +9,6 @@ module.exports = function(router){
     router.get('/logout',HomeController.logout);
     //
     router.get('/product',ProductController.index);
+    router.get('/product/:meta',ProductController.getProductByMeta);
 }
 
