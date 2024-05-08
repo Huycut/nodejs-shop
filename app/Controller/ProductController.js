@@ -18,9 +18,25 @@ exports.index = function(req,res){
             });
 }
 exports.getProductByMeta = function(req,res){
+    var check = [];
     arrayCate.forEach(function(value){
-        if(req.params.meta == value.MetaCate){
-            categori.getProductByMeta(value.IDCate,function(data){
+        if(req.params.meta == value.MetaCate && value.ParentCate == 0 ){
+            check = {
+                "by" : "IdCate",
+                "id" : value.IDCate
+            };
+            categori.getProductByMeta(check,function(data){
+                views.prd = data;
+                res.render('Product/allProduct',views);
+            });
+            return;
+        }
+        if(req.params.meta == value.MetaCate && value.ParentCate != 0 ){
+            check = {
+                "by" : "ParentCate",
+                "id" : value.IDCate
+            };
+            categori.getProductByMeta(check,function(data){
                 views.prd = data;
                 res.render('Product/allProduct',views);
             });

@@ -29,7 +29,7 @@ product.getAllPrd = function(result){
     })
 }
 categori.getProductByMeta = function(id,result){
-    db.query("select * from product where IdCate = ?", id, function(err,data){
+    db.query("select * from product where ?? = ?",[id.by,id.id], function(err,data){
         if(err){
             console.log("Tải danh mục con thất bại");
         }
