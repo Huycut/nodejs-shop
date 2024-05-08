@@ -1,15 +1,15 @@
 const db = require('../commom/sqlHelper');
 const categori = function(Categori){
-    this.id = Categori.id;
+    this.id = Categori.IDCate;
     this.nameCate = Categori.NameCate;
-    this.meta = Categori.Meta;
+    this.meta = Categori.MetaCate;
     this.parentCate = Categori.ParentCate;
 }
 const product = function(Prd){
     this.IdPrd = Prd.IdPrd;
 }
 categori.getCategori = function(result){
-    db.query("select * from categori where ParentCate = 0",function(err,data){
+    db.query("select * from categori ",function(err,data){
         if(err){
             console.log("Tải danh mục thất bại");
         }
@@ -18,17 +18,6 @@ categori.getCategori = function(result){
         }
     })
 };
-categori.getParentCate = function(result){
-    db.query("select * from categori",function(err,data){
-        if(err){
-            console.log("Tải danh mục con thất bại");
-        }
-        else{
-            result(data);
-        }
-    })
-
-}
 product.getAllPrd = function(result){
     db.query("select * from product",function(err,data){
         if(err){
@@ -39,8 +28,15 @@ product.getAllPrd = function(result){
         }
     })
 }
-categori.getProductByMeta = function(result){
-    db.query("select ");
+categori.getProductByMeta = function(id,result){
+    db.query("select * from product where IdCate = ?", id, function(err,data){
+        if(err){
+            console.log("Tải danh mục con thất bại");
+        }
+        else{
+            result(data);
+        }
+    });
 }
 
 module.exports = { categori, product };

@@ -27,18 +27,26 @@
 					<div class="head">Danh Mục</div>
 					<ul class="main-categories">
 						<!-- in danh mục -->
-						<% cate.forEach(function(row){%>
-							<li class="main-nav-list"><a class="test" href=/product/<%- row.MetaCate%>><span
-									class="lnr lnr-arrow-right"></span><%- row.NameCate%><span class="number">(53)</span></a>
-								<% parentCate.forEach(function(rowParent){
-									if(rowParent.ParentCate === row.IDCate){%>
-										<ul class="collapse" id="fruitsVegetable" data-toggle="collapse" aria-expanded="false" aria-controls="fruitsVegetable">
-											<li class="main-nav-list child"><a href=/product/<%- rowParent.MetaCate%>><%- rowParent.NameCate%><span class="number">(13)</span></a></li>
-										</ul>
-									<%}%>
-								<%})%>
-							</li>
-						<%})%>
+						<% cate.forEach(function(row) {
+							if (row.ParentCate === 0) { %>
+							  <li class="main-nav-list">
+								<a class="test" href="/product/<%- row.MetaCate %>">
+								  <span class="lnr lnr-arrow-right"></span>
+								  <%- row.NameCate %>
+								</a>
+								<ul class="collapse" id="" data-toggle="collapse" >
+								  <% cate.forEach(function(childRow) {
+									if (childRow.ParentCate === row.IDCate) { %>
+									  <li class="main-nav-list child">
+										<a href="/product/<%- childRow.MetaCate %>">
+										  <%- childRow.NameCate %>
+										</a>
+									  </li>
+								  <% }}) %>
+								</ul>
+							  </li>
+							<% } %>
+						  <% }) %>
 					</ul>
 				</div>
 				<div class="sidebar-filter mt-50">
@@ -122,10 +130,14 @@
 							<div class="single-product">
 								<img class="img-fluid" src=<%- value.ImgPrd%> alt="">
 								<div class="product-details">
-									<h6>addidas New Hammer sole
-										for Sports person</h6>
+									<h6><%
+										const truncatedText = value.NamePrd.length > 25 ? value.NamePrd.substring(0, 25) + "..." : value.NamePrd;
+										%>
+										<%- truncatedText%>
+
+									</h6>
 									<div class="price">
-										<h6>$150.00</h6>
+										<h6 class="productPrice"><%- value.PricePrd%></h6>
 										<h6 class="l-through">$210.00</h6>
 									</div>
 									<div class="prd-bottom">
