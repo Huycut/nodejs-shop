@@ -10,5 +10,6 @@ module.exports = function(router){
     //
     router.get('/product',ProductController.index);
     router.get('/product/:meta',ProductController.getProductByMeta);
+    router.get('/:metaPrd',ProductController.getDataProduct);
 }
 
