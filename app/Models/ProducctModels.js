@@ -38,5 +38,14 @@ categori.getProductByMeta = function(id,result){
         }
     });
 }
+product.getDataPrd = function(meta,result){
+    db.query("select * from product where metaPrd = ?",meta,function(err,data){
+        if(err){
+            console.log("Tải dữ liệu sản phẩm thất bại");
+        }else{
+            result(data);
+        }
+    })
+}
 
 module.exports = { categori, product };

@@ -45,3 +45,9 @@ exports.getProductByMeta = function(req,res){
 
     });
 }
+exports.getDataProduct = function(req,res){
+    product.getDataPrd(req.params.metaPrd,function(data){
+        res.render('Product/singleProduct',data[0]);
+    });
+    
+}
