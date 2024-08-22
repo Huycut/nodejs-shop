@@ -51,6 +51,7 @@ exports.createAccount = function(req,res){
     } 
 }
 exports.logout = function(req,res){
+    account.currentAccount = null;
     req.session.destroy();
     res.redirect('/');
 }

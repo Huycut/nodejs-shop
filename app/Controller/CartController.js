@@ -1,12 +1,30 @@
+const { func } = require('joi');
 var cart = require('../Models/CartModels');
 var views = {
     header : 'header',
     footer : 'footer',
 }
 exports.index = function(req, res) {
-    res.render('Product/cart', views);
+    cart.dataCart(function(result){
+        if(result === null ){
+            views.dataCart = ''
+        }else{
+            views.dataCart = result; 
+        }
+        res.render('Product/cart', views);     
+    });
+    
+    
 };
 exports.addToCart = function(req,res){
     let productId = req.body.id;
-    cart.addToCart(1);
+    cart.addToCart(productId,function(result){
+        if(result === 1){
+            res.status(200).json({ success: 'Thêm vào giỏ hàng thành công' });
+        }
+        else
+        {
+            res.status(500).json({ error: 'Lỗi khi thêm vào giỏ hàng' });
+        }
+    });
 }
