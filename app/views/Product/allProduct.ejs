@@ -117,7 +117,7 @@
 												</div>
 										</a>
 											<div class="prd-bottom">
-												<button class="social-info" type="submit">
+												<button class="social-info" type="button" onclick= "addToCart('<%- value.IDPrd%>')">
 													<span class="ti-bag"></span>
 													<p class="hover-text">Thêm vào giỏ hàng</p>
 												</button>
@@ -302,3 +302,23 @@
 		<%- include('../footer')%>
 
 </body>
+<script>
+	function addToCart(id) {
+
+    fetch('/addToCart', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ id: id }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        alert('Sản phẩm đã được thêm vào giỏ hàng');
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+    });
+}
+</script>

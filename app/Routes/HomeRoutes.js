@@ -11,6 +11,7 @@ module.exports = function(router){
     router.get('/logout',HomeController.logout);
     //
     router.get('/cart.html',CartController.index);
+    router.post('/addToCart',CartController.addToCart);
     //
     router.get('/product',ProductController.index);
     router.get('/product/:meta',ProductController.getProductByMeta);// in ra sản phẩm theo danh mục
