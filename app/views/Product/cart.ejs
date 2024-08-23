@@ -38,7 +38,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <% 
+                            <% totalPrice = 0;
                             if(dataCart != ''){
                                 dataCart.forEach(function(value){%>
                                 <tr>
@@ -53,22 +53,25 @@
                                         <p><%- value.NamePrd%></p>
                                     </td>
                                     <td>
-                                        <h5><%- value.PricePrd%></h5>
+                                        <h5 class = "productPrice"><%- value.PricePrd%></h5>
                                     </td>
                                     <td>
-                                        <!-- <div class="product_count">
-                                            <input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:"
-                                                class="input-text qty">
-                                            <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
-                                                class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
-                                            <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
-                                                class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button>
-                                        </div> -->
+                                        <div class="product_count">
+                                            <input type="text" name="qty" id="sst_<%= value.IDPrd %>" maxlength="12" value="<%- value.quantity%>" title="Quantity:"
+                                                class="input-text qty" data-price="<%- value.PricePrd %>" data-id="<%= value.IDPrd %>">
+                                            <button onclick="updateQuantity('<%= value.IDPrd %>', 1)" class="increase items-count" type="button">
+                                                <i class="lnr lnr-chevron-up"></i>
+                                            </button>
+                                            <button onclick="updateQuantity('<%= value.IDPrd %>', -1)" class="reduced items-count" type="button">
+                                                <i class="lnr lnr-chevron-down"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                     <td>
-                                        <h5>$720.00</h5>
+                                        <h5 class="productPrice totalPrice_<%= value.IDPrd %>"><%- value.PricePrd * value.quantity%></h5>
                                     </td>
                                 </tr>
+                                <% totalPrice += (value.PricePrd * value.quantity)%>
                              <%})}%>   
                             <tr class="bottom_button">
                                 <td>
@@ -99,7 +102,7 @@
                                     <h5>Subtotal</h5>
                                 </td>
                                 <td>
-                                    <h5>$2160.00</h5>
+                                    <td><h5 id="subtotal"><%-totalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })%></h5></td>
                                 </td>
                             </tr>
                             <tr class="shipping_area">
@@ -167,5 +170,32 @@
 
     
 </body>
+<script>
+function updateQuantity(id, change) {
+    var qtyInput = document.getElementById('sst_' + id);
+    var currentQty = parseInt(qtyInput.value);
+    var newQty = currentQty + change;
 
+    if (newQty >= 1) {
+        qtyInput.value = newQty;
+
+        // Update total price for the current product
+        var price = parseFloat(qtyInput.getAttribute('data-price'));
+        var totalPriceElement = document.querySelector('.totalPrice_' + id);
+        totalPriceElement.innerText = (price * newQty).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+
+        // Optionally, update the subtotal and grand total here
+        updateSubtotal();
+    }
+}
+
+function updateSubtotal() {
+    var subtotal = 0;
+    document.querySelectorAll('.productPrice').forEach(function(element) {
+        subtotal += parseFloat(element.innerText.replace(/[^0-9]/g, ''));
+    });
+
+    document.querySelector('#subtotal').innerText = subtotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+}
+</script>
 </html>

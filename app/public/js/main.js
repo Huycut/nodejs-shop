@@ -579,3 +579,20 @@ $(document).ready(function(){
   }
   number++;
 }
+function addToCart(id) {
+
+  fetch('/addToCart', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ id: id }),
+  })
+  .then(response => response.json())
+  .then(data => {
+      alert(data.success);
+  })
+  .catch((error) => {
+      console.error('Error:', error);
+  });
+}

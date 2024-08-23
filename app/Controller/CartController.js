@@ -22,9 +22,13 @@ exports.addToCart = function(req,res){
         if(result === 1){
             res.status(200).json({ success: 'Thêm vào giỏ hàng thành công' });
         }
+        else if (result ===2){
+            res.status(200).json({ success: 'Sản phẩm đã có trong giỏ hàng' });
+        }
         else
         {
             res.status(500).json({ error: 'Lỗi khi thêm vào giỏ hàng' });
         }
+
     });
 }
