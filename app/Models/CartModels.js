@@ -25,7 +25,7 @@ exports.addToCart = function (id, result) {
 }
 exports.dataCart = function (result) {
     if (account.currentAccount) {
-        db.query(` SELECT product.ImgPrd, product.NamePrd, product.PricePrd,cart.quantity,cart.IDPrd FROM cart 
+        db.query(` SELECT product.ImgPrd, product.NamePrd, product.PricePrd,cart.quantity,cart.IDPrd,product.MetaPrd FROM cart 
         INNER JOIN account ON cart.IdAccount = account.IdAccount 
         INNER JOIN product ON cart.IDPrd = product.IDPrd 
         WHERE cart.IdAccount = ?`, account.currentAccount.idName, function (err,data) {
@@ -60,6 +60,25 @@ function checkCart(idAccount,idPrd,result){
             else{
                 result(0);
             }
+        }
+    })
+}
+exports.updateQuantity = function(newQuantity,idPrd){
+    db.query("UPDATE cart SET quantity = ? WHERE IDPrd= ? AND IdAccount = ?",[newQuantity,idPrd,account.currentAccount.idName],function(err){
+        if(err){
+            console.log(" cập nhập quantity thất bại");
+            result(0);
+        }
+       
+    })
+}
+exports.deleteCart = function(idPrd,result){
+    db.query("delete from cart where IDPrd = ? and IdAccount = ?",[idPrd,account.currentAccount.idName],function(err){
+        if(err){
+            console.log(" Xóa Sản phẩm trong giỏ hàng thất bại");
+        }
+        else{
+            result(1);
         }
     })
 }

@@ -1,111 +1,103 @@
-
-
 <body>
 
     <!-- Start Header Area -->
-	<%- include('../header')%>
-	<!-- End Header Area -->
+    <%- include('../header')%>
+        <!-- End Header Area -->
 
-    <!-- Start Banner Area -->
-    <section class="banner-area organic-breadcrumb">
-        <div class="container">
-            <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
-                <div class="col-first">
-                    <h1>Shopping Cart</h1>
-                    <nav class="d-flex align-items-center">
-                        <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
-                        <a href="/cart.html">Giỏ hàng</a>
-                    </nav>
+        <!-- Start Banner Area -->
+        <section class="banner-area organic-breadcrumb">
+            <div class="container">
+                <div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+                    <div class="col-first">
+                        <h1>Shopping Cart</h1>
+                        <nav class="d-flex align-items-center">
+                            <a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+                            <a href="/cart.html">Giỏ hàng</a>
+                        </nav>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <!-- End Banner Area -->
+        </section>
+        <!-- End Banner Area -->
 
-    <!--================Cart Area =================-->
-    <section class="cart_area">
-        <div class="container">
-            <div class="cart_inner">
-                <div class="table-responsive">
-                    <table class="table">
-                        <thead>
-                            <tr>
-                                <th scope="col">Hình Ảnh</th>
-                                <th scope="col">Tên Sản Phẩm</th>
-                                <th scope="col">Giá</th>
-                                <th scope="col">Số Lượng</th>
-                                <th scope="col">Tổng</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <% totalPrice = 0;
-                            if(dataCart != ''){
-                                dataCart.forEach(function(value){%>
+        <!--================Cart Area =================-->
+        <section class="cart_area">
+            <div class="container">
+                <div class="cart_inner">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
                                 <tr>
-                                    <td>
-                                        <div class="media">
-                                            <div class="d-flex">
-                                                <img src="<%- value.ImgPrd%>" alt="" style="width: 100px; ">
-                                            </div>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <p><%- value.NamePrd%></p>
-                                    </td>
-                                    <td>
-                                        <h5 class = "productPrice"><%- value.PricePrd%></h5>
-                                    </td>
-                                    <td>
-                                        <div class="product_count">
-                                            <input type="text" name="qty" id="sst_<%= value.IDPrd %>" maxlength="12" value="<%- value.quantity%>" title="Quantity:"
-                                                class="input-text qty" data-price="<%- value.PricePrd %>" data-id="<%= value.IDPrd %>">
-                                            <button onclick="updateQuantity('<%= value.IDPrd %>', 1)" class="increase items-count" type="button">
-                                                <i class="lnr lnr-chevron-up"></i>
-                                            </button>
-                                            <button onclick="updateQuantity('<%= value.IDPrd %>', -1)" class="reduced items-count" type="button">
-                                                <i class="lnr lnr-chevron-down"></i>
-                                            </button>
-                                        </div>
-                                    </td>
-                                    <td>
-                                        <h5 class="productPrice totalPrice_<%= value.IDPrd %>"><%- value.PricePrd * value.quantity%></h5>
-                                    </td>
+                                    <th scope="col">Hình Ảnh</th>
+                                    <th scope="col">Tên Sản Phẩm</th>
+                                    <th scope="col">Giá</th>
+                                    <th scope="col">Số Lượng</th>
+                                    <th scope="col">Tổng</th>
+                                    <th scope="col">Xóa</th>
                                 </tr>
-                                <% totalPrice += (value.PricePrd * value.quantity)%>
-                             <%})}%>   
-                            <tr class="bottom_button">
-                                <td>
-                                    <a class="gray_btn" href="#">Update Cart</a>
-                                </td>
-                                <td>
+                            </thead>
+                            <tbody>
+                                <% totalPrice=0; if(dataCart !='' ){ dataCart.forEach(function(value){%>
+                                    <tr id="<%= value.IDPrd %>">
+                                        <td>
+                                            <a href="http://localhost:3000/<%-value.MetaPrd%>">
+                                                <div class="media">
+                                                    <div class="d-flex">
+                                                        <img src="<%- value.ImgPrd%>" alt="" style="width: 100px; ">
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <a href="http://localhost:3000/<%-value.MetaPrd%>">
+                                                <p><%- value.NamePrd%></p>
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <h5 class="productPrice"><%- value.PricePrd%></h5>
+                                        </td>
+                                        <td>
+                                            <div class="product_count">
+                                                <input type="text" name="qty" id="sst_<%= value.IDPrd %>" maxlength="12"
+                                                    value="<%- value.quantity%>" title="Quantity:"
+                                                    class="input-text qty" data-price="<%- value.PricePrd %>"
+                                                    data-id="<%= value.IDPrd %>">
+                                                <button onclick="updateQuantity('<%= value.IDPrd %>', 1)"
+                                                    class="increase items-count" type="button">
+                                                    <i class="lnr lnr-chevron-up"></i>
+                                                </button>
+                                                <button onclick="updateQuantity('<%= value.IDPrd %>', -1)"
+                                                    class="reduced items-count" type="button">
+                                                    <i class="lnr lnr-chevron-down"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <h5 class="productPrice totalPrice_<%= value.IDPrd %>"><%- value.PricePrd *
+                                                    value.quantity%></h5>
+                                        </td>
+                                        <td>
+                                            <button type="button" onclick="deleteCart('<%= value.IDPrd %>')">Xóa</a>
+                                        </td>
+                                    </tr>
+                                    <% totalPrice +=(value.PricePrd * value.quantity)%>
+                                        <%})}%>
+                                            <tr>
+                                                <td>
 
-                                </td>
-                                <td>
+                                                </td>
+                                                <td>
+                                                    <h5>Tổng Tiền:</h5>
+                                                </td>
+                                                <td>
 
-                                </td>
-                                <td>
-                                    <div class="cupon_text d-flex align-items-center">
-                                        <input type="text" placeholder="Coupon Code">
-                                        <a class="primary-btn" href="#">Apply</a>
-                                        <a class="gray_btn" href="#">Close Coupon</a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-
-                                </td>
-                                <td>
-
-                                </td>
-                                <td>
-                                    <h5>Subtotal</h5>
-                                </td>
-                                <td>
-                                    <td><h5 id="subtotal"><%-totalPrice.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })%></h5></td>
-                                </td>
-                            </tr>
-                            <tr class="shipping_area">
+                                                </td>
+                                                <td>
+                                                    <h5 id="subtotal"><%-totalPrice.toLocaleString('vi-VN', {
+                                                            style: 'currency' , currency: 'VND' })%></h5>
+                                                </td>
+                                            </tr>
+                                            <!-- <tr class="shipping_area">
                                 <td>
 
                                 </td>
@@ -138,64 +130,120 @@
                                         <a class="gray_btn" href="#">Update Details</a>
                                     </div>
                                 </td>
-                            </tr>
-                            <tr class="out_button_area">
-                                <td>
+                            </tr> -->
+                                            <tr class="out_button_area">
+                                                <td>
 
-                                </td>
-                                <td>
+                                                </td>
+                                                <td>
 
-                                </td>
-                                <td>
+                                                </td>
+                                                <td>
 
-                                </td>
-                                <td>
-                                    <div class="checkout_btn_inner d-flex align-items-center">
-                                        <a class="gray_btn" href="#">Tiếp Tục Mua Hàng</a>
-                                        <a class="primary-btn" href="#">Thanh Toán</a>
-                                    </div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                                                </td>
+                                                <td>
+                                                    <div class="checkout_btn_inner d-flex align-items-center">
+                                                        <a class="gray_btn" href="http://localhost:3000/product">Tiếp
+                                                            Tục Mua Hàng</a>
+                                                        <a class="primary-btn" href="#">Thanh Toán</a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
-        </div>
-    </section>
-    <!--================End Cart Area =================-->
-    <%- include('../footer')%>
-    <!-- start footer Area -->
-    
-    <!-- End footer Area -->
+        </section>
+        <!--================End Cart Area =================-->
+        <%- include('../footer')%>
+            <!-- start footer Area -->
 
-    
+            <!-- End footer Area -->
+
+
 </body>
 <script>
-function updateQuantity(id, change) {
-    var qtyInput = document.getElementById('sst_' + id);
-    var currentQty = parseInt(qtyInput.value);
-    var newQty = currentQty + change;
+    let throttleTimer;
+    function updateQuantity(id, change) {
+        var qtyInput = document.getElementById('sst_' + id);
+        var currentQty = parseInt(qtyInput.value);
+        var newQty = currentQty + change;
 
-    if (newQty >= 1) {
-        qtyInput.value = newQty;
+        if (newQty >= 1) {
+            qtyInput.value = newQty;
 
-        // Update total price for the current product
-        var price = parseFloat(qtyInput.getAttribute('data-price'));
-        var totalPriceElement = document.querySelector('.totalPrice_' + id);
-        totalPriceElement.innerText = (price * newQty).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+            // Update total price for the current product
+            var price = parseFloat(qtyInput.getAttribute('data-price'));
+            var totalPriceElement = document.querySelector('.totalPrice_' + id);
+            totalPriceElement.innerText = (price * newQty).toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
 
-        // Optionally, update the subtotal and grand total here
-        updateSubtotal();
+            // Optionally, update the subtotal and grand total here
+            updateSubtotal();
+            if (!throttleTimer) {
+                throttleTimer = setTimeout(() => {
+                    fetch('/updateQuantity', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ productId: id, newQuantity: newQty })
+                    })
+                        .then(response => response.json())
+                        .catch(error => {
+                            console.error('Lỗi kết nối:', error);
+                        });
+                    throttleTimer = null;
+                }, 100); // điều chỉnh thời gian cho web ko bị quá tải
+            }
+        }
+
     }
-}
 
-function updateSubtotal() {
-    var subtotal = 0;
-    document.querySelectorAll('.productPrice').forEach(function(element) {
-        subtotal += parseFloat(element.innerText.replace(/[^0-9]/g, ''));
-    });
+    function updateSubtotal() {
+        var subtotal = 0;
+        document.querySelectorAll('tr').forEach(function (row) {
+            var priceElement = row.querySelector('.productPrice');
+            var quantityElement = row.querySelector('.qty');
 
-    document.querySelector('#subtotal').innerText = subtotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
-}
+            if (priceElement && quantityElement) {
+                var price = parseFloat(priceElement.innerText.replace(/[^0-9]/g, ''));
+                var quantity = parseInt(quantityElement.value);
+                subtotal += price * quantity;
+            }
+        });
+
+        document.querySelector('#subtotal').innerText = subtotal.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' });
+    }
+    function deleteCart(idPrd) {
+        fetch('/deleteCart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ productId: idPrd })
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    console.log('Xóa sản phẩm thành công!');
+
+                    // Xóa dòng <tr> có id tương ứng với sản phẩm
+                    var row = document.getElementById(idPrd);
+                    if (row) {
+                        row.remove();
+                    }
+
+                    // Cập nhật lại subtotal
+                    updateSubtotal();
+                } else {
+                    console.error('Lỗi khi xóa sản phẩm!');
+                }
+            })
+            .catch(error => {
+                console.error('Lỗi kết nối:', error);
+            });
+    }
 </script>
+
 </html>

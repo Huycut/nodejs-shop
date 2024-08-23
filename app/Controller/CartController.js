@@ -32,3 +32,16 @@ exports.addToCart = function(req,res){
 
     });
 }
+exports.updateQuantity = function(req,res){
+    let productId = req.body.productId;
+    let newQuantity = req.body.newQuantity;
+    cart.updateQuantity(newQuantity,productId);
+}
+exports.deleteCart = function(req,res){
+    let idPrd = req.body.productId;
+    cart.deleteCart(idPrd,function(result){
+        if(result === 1 ){
+            res.json({success:true});
+        }
+    })
+}
