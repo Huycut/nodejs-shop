@@ -18,6 +18,7 @@ module.exports = function(router){
     router.get('/product',ProductController.index);
     router.get('/product/:meta',ProductController.getProductByMeta);// in ra sản phẩm theo danh mục
     router.get('/:metaPrd',ProductController.getDataProduct);
+    router.post('/product/review',ProductController.insertReview);
     //
     
 }

@@ -22,7 +22,8 @@ exports.login = function (req,res){
         password : req.body.password
     }
     account.login(data,function (response){
-        req.session.name = response;
+        req.session.name = response.Name;
+        req.session.IdAccount = response.IdAccount;
         res.redirect('/');
     });
     

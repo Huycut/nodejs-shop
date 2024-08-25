@@ -68,12 +68,29 @@ exports.getProductByMeta = function (req, res) {
     });
 }
 exports.getDataProduct = function (req, res) {
-    product.getDataPrd(req.params.metaPrd, function (data) {
-        if (data) {
-            res.render('Product/singleProduct', data);
+    let data = {};
+    product.getDataPrd(req.params.metaPrd, function (dataPrd) {
+        if (dataPrd) {
+            data['prd'] = dataPrd;
+            console.log(dataPrd);
+            product.getReviewByPrd(dataPrd.IDPrd,function(dataReview){
+                data['reviewPrd'] = dataReview;
+                res.render('Product/singleProduct', data);
+            })
         } else {
             res.status(404).send('Product not found');
         }
     });
 
+}
+exports.insertReview = function (req,res){
+    const { stars, comment,idPrd } = req.body;
+    console.log('Số sao nhận được:', stars);
+    console.log('Bình luận nhận được:', comment);
+    console.log('sản phẩm:', idPrd);
+    console.log(req.session.IdAccount);
+    product.insertReview(req.session.IdAccount,idPrd,comment,stars)
+
+    // Trả về phản hồi cho client
+    res.json({ message: 'Nhận dữ liệu thành công', stars, comment });
 }

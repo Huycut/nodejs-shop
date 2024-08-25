@@ -6,19 +6,33 @@ const account = function(id,name){
     this.idName = id;
 }
 account.currentAccount = null;
-account.login = function(data,result){
-        db.query("select * from account where email = ?",[data.email], function(err, user) {
-          if (err) {
-            console.log("Error creating account");
-          } else {
-            var isMatch = bcrypt.compareSync(data.password, user[0].Password);
-            if(isMatch){
-              account.currentAccount = new account(user[0].IdAccount, user[0].Name);
-                result (user[0].Name);
-                
-            }   
-          }
-        });
+account.login = function(data, result) {
+  // Truy vấn thông tin người dùng dựa trên email
+  db.query("SELECT IdAccount, Name, Password FROM account WHERE email = ?", [data.email], function(err, rows) {
+      if (err) {
+          console.log("Error querying account:", err);
+          return result({ error: "Internal server error" }); // Trả về lỗi cho client
+      }
+
+      // Kiểm tra xem có người dùng không
+      if (rows.length === 0) {
+          return result({ error: "Invalid email or password" });
+      }
+
+      // Lấy thông tin người dùng
+      const user = rows[0];
+      
+      // So sánh mật khẩu
+      var isMatch = bcrypt.compareSync(data.password, user.Password);
+      if (isMatch) {
+          // Tạo đối tượng tài khoản hiện tại
+          account.currentAccount = new account(user.IdAccount, user.Name);
+          // Chỉ trả về IdAccount và Name
+          return result({ IdAccount: user.IdAccount, Name: user.Name });
+      } else {
+          return result({ error: "Invalid email or password" });
+      }
+  });
 }
 account.create = function(data) {
     return new Promise(function(resolve, reject) {

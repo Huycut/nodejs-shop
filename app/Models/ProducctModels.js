@@ -73,7 +73,30 @@ product.getColumPageByMeta = function (value,callback) {
         callback(null, count);
       }
     });
-  }
+}
+product.getReviewByPrd = function (value,call){
+    db.query(` select account.Name,reviewprd.Comment,reviewprd.Rating 
+        from reviewprd 
+        inner JOIN account 
+        on reviewprd.IdAccount = account.IdAccount 
+        inner JOIN product 
+        on product.IDPrd = reviewprd.Id 
+        where reviewprd.Id = ?`,value,function(err,result){
+            if(err){
+                console.log("Hiển thị đánh giá sản phẩm thất bại");
+            }
+            else{
+                call(result);
+            }
+        })
+}
+product.insertReview = function(idAccount,idPrd,comment,stars){
+    db.query("INSERT INTO `reviewprd` set IdAccount = ? , Id = ? , Comment = ?, Rating = ?",[idAccount,idPrd,comment,stars],function(err){
+        if(err){
+            console.log("thêm đánh giá thất bại");
+        }
+    });
+}
 
 
 module.exports = { categori, product };

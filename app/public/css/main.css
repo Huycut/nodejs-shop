@@ -5804,3 +5804,22 @@ label {
   display: block;
   opacity: 1;
 }
+/* css cá nhân */
+.star-transparent {
+  color: transparent; /* Làm cho ngôi sao trong suốt */
+  -webkit-text-stroke: 1px #FFD700; /* Tạo đường viền màu vàng quanh ngôi sao */
+  transition: color 0.3s, -webkit-text-stroke 0.3s; /* Thêm hiệu ứng chuyển tiếp */
+  cursor: pointer;
+}
+
+.star-transparent.selected,
+.star-transparent.hover {
+  color: #FFD700; /* Tô màu vàng khi chọn */
+  -webkit-text-stroke: 0; /* Loại bỏ đường viền khi chọn */
+}
+
+.star-transparent.hover {
+  color: #FFD700; /* Tô màu vàng khi hover */
+  -webkit-text-stroke: 0; /* Loại bỏ đường viền khi hover */
+}
+
