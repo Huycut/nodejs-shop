@@ -175,34 +175,34 @@
 								<div class="row total_rate">
 									<div class="col-6">
 										<div class="box_total">
-											<h5>Overall</h5>
-											<h4>4.0</h4>
-											<h6>(03 Reviews)</h6>
+											<h5>Tổng Điểm</h5>
+											<h4><%- averageRating%></h4>
+											<h6>(dựa trên <%- totalReviews%> đánh giá)</h6>
 										</div>
 									</div>
 									<div class="col-6">
 										<div class="rating_list">
 											<h3>Based on 3 Reviews</h3>
 											<ul class="list">
-												<li><a href="#">5 Star <i class="fa fa-star"></i><i
+												<li><a href="#">5 Sao <i class="fa fa-star"></i><i
 															class="fa fa-star"></i><i class="fa fa-star"></i><i
-															class="fa fa-star"></i><i class="fa fa-star"></i> 01</a>
+															class="fa fa-star"></i><i class="fa fa-star"></i> <%- rating['5stars'] %></a>
 												</li>
-												<li><a href="#">4 Star <i class="fa fa-star"></i><i
+												<li><a href="#">4 Sao <i class="fa fa-star"></i><i
 															class="fa fa-star"></i><i class="fa fa-star"></i><i
-															class="fa fa-star"></i><i class="fa fa-star"></i> 01</a>
+															class="fa fa-star"></i><i class="fa fa-star"></i> <%- rating['4stars'] %></a>
 												</li>
-												<li><a href="#">3 Star <i class="fa fa-star"></i><i
+												<li><a href="#">3 Sao <i class="fa fa-star"></i><i
 															class="fa fa-star"></i><i class="fa fa-star"></i><i
-															class="fa fa-star"></i><i class="fa fa-star"></i> 01</a>
+															class="fa fa-star"></i><i class="fa fa-star"></i> <%- rating['3stars'] %></a>
 												</li>
-												<li><a href="#">2 Star <i class="fa fa-star"></i><i
+												<li><a href="#">2 Sao <i class="fa fa-star"></i><i
 															class="fa fa-star"></i><i class="fa fa-star"></i><i
-															class="fa fa-star"></i><i class="fa fa-star"></i> 01</a>
+															class="fa fa-star"></i><i class="fa fa-star"></i> <%- rating['2stars'] %></a>
 												</li>
-												<li><a href="#">1 Star <i class="fa fa-star"></i><i
+												<li><a href="#">1 Sao <i class="fa fa-star"></i><i
 															class="fa fa-star"></i><i class="fa fa-star"></i><i
-															class="fa fa-star"></i><i class="fa fa-star"></i> 01</a>
+															class="fa fa-star"></i><i class="fa fa-star"></i> <%- rating['1stars'] %></a>
 												</li>
 											</ul>
 										</div>
@@ -213,7 +213,7 @@
 										<div class="review_item">
 											<div class="media">
 												<div class="d-flex">
-													<img src="img/product/review-1.png" alt="">
+													<img src="img/product/review.jpg" alt="" style = "width: 60px;">
 												</div>
 												<div class="media-body">
 													<h4><%- valueReview.Name%></h4>

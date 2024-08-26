@@ -39,14 +39,14 @@ exports.getProductByMeta = function (req, res) {
                 "by": "IdCate",
                 "id": value.IDCate
             };
-            product.getColumPageByMeta(check,(err, count) => {
+            product.getColumPageByMeta(check, (err, count) => {
                 views.pagination = count;
             });
             views.hrefPage = req.params.meta;
             categori.getProductByMeta(check, function (data) {
                 views.prd = data;
                 res.render('Product/allProduct', views);
-            },page);
+            }, page);
             return;
         }
         if (req.params.meta == value.MetaCate && value.ParentCate != 0) {
@@ -54,14 +54,14 @@ exports.getProductByMeta = function (req, res) {
                 "by": "ParentCate",
                 "id": value.IDCate
             };
-            product.getColumPageByMeta(check,(err, count) => {
+            product.getColumPageByMeta(check, (err, count) => {
                 views.pagination = count;
             });
             views.hrefPage = req.params.meta;
             categori.getProductByMeta(check, function (data) {
                 views.prd = data;
                 res.render('Product/allProduct', views);
-            },page);
+            }, page);
             return;
         }
 
@@ -72,24 +72,40 @@ exports.getDataProduct = function (req, res) {
     product.getDataPrd(req.params.metaPrd, function (dataPrd) {
         if (dataPrd) {
             data['prd'] = dataPrd;
-            console.log(dataPrd);
-            product.getReviewByPrd(dataPrd.IDPrd,function(dataReview){
-                data['reviewPrd'] = dataReview;
-                res.render('Product/singleProduct', data);
-            })
+            product.getRatingReivew(dataPrd.IDPrd, function (dataRating) {
+                data['rating'] = dataRating;
+                const totalPoints =
+                dataRating['1stars'] * 1 +
+                dataRating['2stars'] * 2 +
+                dataRating['3stars'] * 3 +
+                dataRating['4stars'] * 4 +
+                dataRating['5stars'] * 5;
+
+                const totalReviews =
+                dataRating['1stars'] +
+                dataRating['2stars'] +
+                dataRating['3stars'] +
+                dataRating['4stars'] +
+                dataRating['5stars'];
+
+                var averageRating = totalReviews > 0 ? (totalPoints / totalReviews).toFixed(2) : 0;
+                data['averageRating'] = averageRating;
+                data['totalReviews'] = totalReviews;
+                product.getReviewByPrd(dataPrd.IDPrd, function (dataReview) {
+                    data['reviewPrd'] = dataReview;
+                    res.render('Product/singleProduct', data);
+                })
+            });
+
         } else {
             res.status(404).send('Product not found');
         }
     });
 
 }
-exports.insertReview = function (req,res){
-    const { stars, comment,idPrd } = req.body;
-    console.log('Số sao nhận được:', stars);
-    console.log('Bình luận nhận được:', comment);
-    console.log('sản phẩm:', idPrd);
-    console.log(req.session.IdAccount);
-    product.insertReview(req.session.IdAccount,idPrd,comment,stars)
+exports.insertReview = function (req, res) {
+    const { stars, comment, idPrd } = req.body;
+    product.insertReview(req.session.IdAccount, idPrd, comment, stars)
 
     // Trả về phản hồi cho client
     res.json({ message: 'Nhận dữ liệu thành công', stars, comment });
