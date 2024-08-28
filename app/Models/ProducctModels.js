@@ -90,7 +90,7 @@ product.getReviewByPrd = function (value, call) {
         }
     })
 }
-product.insertReview = function (idAccount, idPrd, comment, stars) {
+product.insertReview = function (idAccount, idPrd, comment, stars,result) {
     db.query("INSERT INTO `reviewprd` set IdAccount = ? , Id = ? , Comment = ?, Rating = ?", [idAccount, idPrd, comment, stars], function (err) {
         if (err) {
             console.log("thêm đánh giá thất bại");

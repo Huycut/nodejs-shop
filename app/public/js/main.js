@@ -596,3 +596,4 @@ function addToCart(id) {
       console.error('Error:', error);
   });
 }
+

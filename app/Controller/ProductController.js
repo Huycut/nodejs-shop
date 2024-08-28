@@ -105,7 +105,7 @@ exports.getDataProduct = function (req, res) {
 }
 exports.insertReview = function (req, res) {
     const { stars, comment, idPrd } = req.body;
-    product.insertReview(req.session.IdAccount, idPrd, comment, stars)
+    product.insertReview(req.session.IdAccount, idPrd, comment, stars);
 
     // Trả về phản hồi cho client
     res.json({ message: 'Nhận dữ liệu thành công', stars, comment });
