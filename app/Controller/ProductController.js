@@ -1,4 +1,4 @@
-const { array } = require("joi");
+const { array, func } = require("joi");
 var { categori, product } = require("../Models/ProducctModels")
 
 var views = {
@@ -23,6 +23,7 @@ exports.index = function (req, res) {
     views.hrefPage = '';
     product.getAllPrd(function (data) {// in ra tất cả sản phẩmphẩm
         views.prd = data;
+        views.salePrd = product.productsOnSale;
         res.render('Product/allProduct', views);
     }, page);
 }
@@ -75,25 +76,27 @@ exports.getDataProduct = function (req, res) {
             product.getRatingReivew(dataPrd.IDPrd, function (dataRating) {
                 data['rating'] = dataRating;
                 const totalPoints =
-                dataRating['1stars'] * 1 +
-                dataRating['2stars'] * 2 +
-                dataRating['3stars'] * 3 +
-                dataRating['4stars'] * 4 +
-                dataRating['5stars'] * 5;
+                    dataRating['1stars'] * 1 +
+                    dataRating['2stars'] * 2 +
+                    dataRating['3stars'] * 3 +
+                    dataRating['4stars'] * 4 +
+                    dataRating['5stars'] * 5;
 
                 const totalReviews =
-                dataRating['1stars'] +
-                dataRating['2stars'] +
-                dataRating['3stars'] +
-                dataRating['4stars'] +
-                dataRating['5stars'];
+                    dataRating['1stars'] +
+                    dataRating['2stars'] +
+                    dataRating['3stars'] +
+                    dataRating['4stars'] +
+                    dataRating['5stars'];
 
                 var averageRating = totalReviews > 0 ? (totalPoints / totalReviews).toFixed(2) : 0;
                 data['averageRating'] = averageRating;
                 data['totalReviews'] = totalReviews;
                 product.getReviewByPrd(dataPrd.IDPrd, function (dataReview) {
                     data['reviewPrd'] = dataReview;
+                    data['salePrd'] = product.productsOnSale;
                     res.render('Product/singleProduct', data);
+
                 })
             });
 
@@ -110,3 +113,4 @@ exports.insertReview = function (req, res) {
     // Trả về phản hồi cho client
     res.json({ message: 'Nhận dữ liệu thành công', stars, comment });
 }
+

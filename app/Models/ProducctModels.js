@@ -9,6 +9,15 @@ const categori = function (Categori) {
 const product = function (Prd) {
     this.IdPrd = Prd.IdPrd;
 }
+const productSale = function( SaleOff,NamePrd,PricePrd,ImgPrd,MetaPrd){
+
+    this.SaleOff = SaleOff;
+    this.NamePrd = NamePrd;
+    this.PricePrd = PricePrd;
+    this.ImgPrd = ImgPrd;
+    this.MetaPrd = MetaPrd;
+
+}
 categori.getCategori = function (result) {
     db.query("select * from categori ", function (err, data) {
         if (err) {
@@ -122,6 +131,20 @@ product.getRatingReivew = function (idPrd,result) {
         }
     });
 }
+db.query(`select sale.SaleOff,product.NamePrd,product.PricePrd,product.ImgPrd,product.MetaPrd 
+    from sale 
+    inner join 
+    product 
+    on sale.idPrd = product.IDPrd`,function(err,data){
+    if(err){
+        console.log('xuất sản phẩm sale thất bại');
+    }else{
+         product.productsOnSale = data.map(item => 
+            new productSale(item.SaleOff, item.NamePrd, item.PricePrd, item.ImgPrd, item.MetaPrd)
+        );
+    }
+})
 
 
-module.exports = { categori, product };
+
+module.exports = { categori, product};
