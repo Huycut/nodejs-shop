@@ -98,26 +98,33 @@
 					<section class="lattest-product-area pb-40 category-list">
 						<div class="row">
 							<!-- single product -->
-							<% prd.forEach(function(value){%>
-								<div class="col-lg-4 col-md-6">
-									<div class="single-product">
-										<a href="http://localhost:3000/<%-value.MetaPrd%>">
-											<img class="img-fluid" src=<%- value.ImgPrd%> alt="">
-											<div class="product-details">
-												<h6>
-													<% const truncatedText=value.NamePrd.length> 25 ?
-														value.NamePrd.substring(0, 20) + "..." : value.NamePrd;
-														%>
-														<%- truncatedText%>
+							<% prd.forEach(function(value){ var onSale=false; var salePrice=0;%>
+								<% for(i=0;i < salePrd.length;i++){ if(value.NamePrd===salePrd[i].NamePrd){ onSale=true;
+									salePrice=salePrd[i].SaleOff; break; } }%>
+									<div class="col-lg-4 col-md-6">
+										<div class="single-product">
+											<a href="http://localhost:3000/<%-value.MetaPrd%>">
+												<img class="img-fluid" src=<%- value.ImgPrd%> alt="">
+												<div class="product-details">
+													<h6>
+														<% const truncatedText=value.NamePrd.length> 25 ?
+															value.NamePrd.substring(0, 20) + "..." : value.NamePrd;
+															%>
+															<%- truncatedText%>
 
-												</h6>
-												<div class="price">
-													<h6 class="productPrice"><%- value.PricePrd%></h6>
-													<h6 class="l-through">$210.00</h6>
-												</div>
-										</a>
+													</h6>
+													<div class="price">
+														<h6 class="productPrice"><%- (onSale) ? value.PricePrd-salePrice
+																: value.PricePrd %></h6>
+														<% if (onSale) { %>
+															<h6 class="l-through productPrice"><%- value.PricePrd %>
+															</h6>
+															<% } %>
+													</div>
+											</a>
 											<div class="prd-bottom">
-												<button class="social-info" type="button" onclick= "addToCart('<%- value.IDPrd%>')">
+												<button class="social-info" type="button"
+													onclick="addToCart('<%- value.IDPrd%>')">
 													<span class="ti-bag"></span>
 													<p class="hover-text">Thêm vào giỏ hàng</p>
 												</button>
@@ -127,9 +134,8 @@
 												</button>
 
 											</div>
+										</div>
 									</div>
-
-								</div>
 						</div>
 						<%})%>
 				</div>
@@ -177,23 +183,26 @@
 				<div class="row">
 					<div class="col-lg-9">
 						<div class="row">
-						<% salePrd.forEach(function(value){%>
-							<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
-								<div class="single-related-product d-flex">
-									<a href="<%- value.MetaPrd%>"><img src="<%- value.ImgPrd%>" alt="" style="width: 100px;"></a>
-									<div class="desc">
-										<a href="<%- value.MetaPrd%>" class="title"><% const truncatedTextSale=value.NamePrd.length> 25 ?
-											value.NamePrd.substring(0, 34) + "..." : value.NamePrd;
-											%>
-											<%- truncatedTextSale%></a>
-										<div class="price" style="display: flex;flex-direction: column;">
-											<h6 class ="productPrice"><%- (value.PricePrd - value.SaleOff)%></h6>
-											<h6 class="l-through productPrice"><%- value.PricePrd%></h6>
+							<% salePrd.forEach(function(value){%>
+								<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+									<div class="single-related-product d-flex">
+										<a href="<%- value.MetaPrd%>"><img src="<%- value.ImgPrd%>" alt=""
+												style="width: 100px;"></a>
+										<div class="desc">
+											<a href="<%- value.MetaPrd%>" class="title">
+												<% const truncatedTextSale=value.NamePrd.length> 25 ?
+													value.NamePrd.substring(0, 34) + "..." : value.NamePrd;
+													%>
+													<%- truncatedTextSale%>
+											</a>
+											<div class="price" style="display: flex;flex-direction: column;">
+												<h6 class="productPrice"><%- (value.PricePrd - value.SaleOff)%></h6>
+												<h6 class="l-through productPrice"><%- value.PricePrd%></h6>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						<%});%>	
+								<%});%>
 						</div>
 					</div>
 					<!-- <div class="col-lg-3">

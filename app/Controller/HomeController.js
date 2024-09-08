@@ -2,12 +2,14 @@ const bcrypt = require('bcryptjs');
 const Joi = require('joi');
 var account = require('../Models/AccModels');
 const session = require('express-session');
+var { categori, product } = require("../Models/ProducctModels")
 var views = {
     header : 'header',
     footer : 'footer',
 }
 ///Trang Chủ
 exports.index = function(req,res){
+    views['salePrd'] = product.productsOnSale;
     res.render('home',views);
 }//Trang login
 exports.pageLogin = function (req,res){
@@ -81,13 +83,3 @@ function requireNoAuth(req, res,value) {
       res.render(value);
     }
   }
-// router.get('/',(req,res)=>{
-//     res.render('home',{ header : 'header', footer : 'footer'});
-// });
-// router.get('/:id',(req,res)=>{
-//     res.json('id: ' + req.params.id);
-// })
-// router.post('/',(req,res)=>{
-//     console.log(req.body);
-//     res.json('routes post ' + req.body.name);
-// });

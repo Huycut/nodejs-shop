@@ -53,14 +53,27 @@ categori.getProductByMeta = function (id, result, page) {
     });
 }
 product.getDataPrd = function (meta, result) {
-    db.query("select * from product where metaPrd = ?", meta, function (err, data) {
+    db.query("SELECT * FROM product WHERE metaPrd = ?", meta, function (err, data) {
         if (err) {
             console.log("Tải dữ liệu sản phẩm thất bại");
+            result(null);
         } else {
-            result(data[0]);
+            let productData = data[0]; // Store product data
+            let id = productData.IDPrd; // Get the product ID
+
+            db.query("SELECT SaleOff FROM sale WHERE idPrd = ?", id, function (err, dataSale) {
+                if (err) {
+                    console.log("Lỗi khi truy vấn sale");
+                    result(null);
+                } else {
+                    productData.SaleOff = dataSale[0]?.SaleOff || null; // Add sale info to product data
+                    result(productData); // Return combined result
+                    console.log(productData);
+                }
+            });
         }
-    })
-}
+    });
+};
 product.getColumPage = function (callback) {
     db.query('SELECT COUNT(*) AS total FROM product', (err, results) => {
         if (err) {
