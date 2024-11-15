@@ -3,7 +3,6 @@
 	<!-- Start Header Area -->
 	<%- include('../header')%>
 		<!-- End Header Area -->
-
 		<!-- Start Banner Area -->
 		<section class="banner-area organic-breadcrumb">
 			<div class="container">
@@ -29,14 +28,14 @@
 							<!-- in danh mục -->
 							<% cate.forEach(function(row) { if (row.ParentCate===0) { %>
 								<li class="main-nav-list">
-									<a class="test" href="/product/<%- row.MetaCate %>">
+									<a class="test" href="/collections/<%- row.MetaCate %>">
 										<span class="lnr lnr-arrow-right"></span>
 										<%- row.NameCate %>
 									</a>
 									<ul class="collapse" id="" data-toggle="collapse">
 										<% cate.forEach(function(childRow) { if (childRow.ParentCate===row.IDCate) { %>
 											<li class="main-nav-list child">
-												<a href="/product/<%- childRow.MetaCate %>">
+												<a href="/collections/<%- childRow.MetaCate %>">
 													<%- childRow.NameCate %>
 												</a>
 											</li>
@@ -103,7 +102,7 @@
 									salePrice=salePrd[i].SaleOff; break; } }%>
 									<div class="col-lg-4 col-md-6">
 										<div class="single-product">
-											<a href="http://localhost:3000/<%-value.MetaPrd%>">
+											<a href="http://localhost:3000/product/<%-value.MetaPrd%>">
 												<img class="img-fluid" src=<%- value.ImgPrd%> alt="">
 												<div class="product-details">
 													<h6>
@@ -186,7 +185,7 @@
 							<% salePrd.forEach(function(value){%>
 								<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 									<div class="single-related-product d-flex">
-										<a href="<%- value.MetaPrd%>"><img src="<%- value.ImgPrd%>" alt=""
+										<a href="/product/<%- value.MetaPrd%>"><img src="<%- value.ImgPrd%>" alt=""
 												style="width: 100px;"></a>
 										<div class="desc">
 											<a href="<%- value.MetaPrd%>" class="title">

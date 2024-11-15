@@ -15,9 +15,9 @@ module.exports = function(router){
     router.post('/updateQuantity',CartController.updateQuantity);
     router.post('/deleteCart',CartController.deleteCart);
     //
-    router.get('/product',ProductController.index);
-    router.get('/product/:meta',ProductController.getProductByMeta);// in ra sản phẩm theo danh mục
-    router.get('/:metaPrd',ProductController.getDataProduct);
+    router.get('/products',ProductController.index);
+    router.get('/collections/:meta',ProductController.getProductByMeta);// in ra sản phẩm theo danh mục
+    router.get('/product/:metaPrd',ProductController.getDataProduct);// in ra thông tin sản phẩm
     router.post('/product/review',ProductController.insertReview);
     //
     

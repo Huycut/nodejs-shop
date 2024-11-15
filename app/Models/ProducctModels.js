@@ -68,7 +68,6 @@ product.getDataPrd = function (meta, result) {
                 } else {
                     productData.SaleOff = dataSale[0]?.SaleOff || null; // Add sale info to product data
                     result(productData); // Return combined result
-                    console.log(productData);
                 }
             });
         }
