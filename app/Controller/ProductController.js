@@ -6,6 +6,7 @@ var views = {
     footer: 'footer',
 }
 var arrayCate = [];
+var check = 0;
 categori.getCategori(function (data) {
     // Xử lý dữ liệu danh mục
     arrayCate = data;
@@ -24,6 +25,7 @@ exports.index = function (req, res) {
     product.getAllPrd(function (data) {// in ra tất cả sản phẩmphẩm
         views.prd = data;
         views.salePrd = product.productsOnSale;
+        views.check = 1;
         res.render('Product/allProduct', views);
     }, page);
 }
@@ -34,6 +36,7 @@ exports.getProductByMeta = function (req, res) {
         page = req.query.page;
     }
     views.currentPage = parseInt(page);
+    views.check = 2;
     arrayCate.forEach(function (value) {
         if (req.params.meta == value.MetaCate && value.ParentCate == 0) {
             check = {
@@ -95,6 +98,7 @@ exports.getDataProduct = function (req, res) {
                 product.getReviewByPrd(dataPrd.IDPrd, function (dataReview) {
                     data['reviewPrd'] = dataReview;
                     data['salePrd'] = product.productsOnSale;
+                    data['cate'] = arrayCate;
                     res.render('Product/singleProduct', data);
 
                 })

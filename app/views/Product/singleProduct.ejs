@@ -43,7 +43,20 @@
 							<h4 class="productPrice" style="text-decoration: line-through;color: #cccccc;margin-bottom: 0;"><%- prd.PricePrd%></h4>
 							<%}%>
 							<ul class="list">
-								<li><a class="active" href="#"><span>Category</span> : Household</a></li>
+								<% nameCate = '';
+								metaCate = '';
+								cate.forEach(function(value) { %>
+									<% if (prd.IdCate === value.IDCate) { %>
+										<%
+										nameCate = value.NameCate
+										metaCate = value.MetaCate
+										%>
+									<% } %>
+								<% }) %>
+								<li><a class="active" href="/collections/<%- metaCate%>">
+									<li>
+										<span>Danh Mục</span>: <%- nameCate%>
+									</li>
 								<li><a href="#"><span>Availibility</span> : In Stock</a></li>
 							</ul>
 							<p>Mill Oil is an innovative oil filled radiator with the most modern technology. If you are
