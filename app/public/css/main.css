@@ -5822,3 +5822,30 @@ label {
   -webkit-text-stroke: 0; /* Loại bỏ đường viền khi hover */
 }
 
+.size-options {
+  padding: 90px 0 30px 0;
+  display: flex;
+  gap: 10px;
+}
+
+.size-item {
+  padding: 10px 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: normal;
+}
+
+.size-item:hover {
+  background-color: #f0f0f0;
+}
+
+.size-item.active {
+  font-weight: bold; /* Làm chữ đậm */
+  background-color: #007bff; /* Màu nền */
+  color: white; /* Màu chữ */
+  border-color: #007bff; /* Màu viền */
+}
+
+

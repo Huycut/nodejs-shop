@@ -40,7 +40,7 @@
                                 <% totalPrice=0; if(dataCart !='' ){ dataCart.forEach(function(value){%>
                                     <tr id="<%= value.IDPrd %>">
                                         <td>
-                                            <a href="http://localhost:3000/<%-value.MetaPrd%>">
+                                            <a href="http://localhost:3000/product/<%-value.MetaPrd%>">
                                                 <div class="media">
                                                     <div class="d-flex">
                                                         <img src="<%- value.ImgPrd%>" alt="" style="width: 100px; ">
@@ -49,7 +49,7 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="http://localhost:3000/<%-value.MetaPrd%>">
+                                            <a href="http://localhost:3000/product/<%-value.MetaPrd%>">
                                                 <p><%- value.NamePrd%></p>
                                             </a>
                                         </td>

@@ -40,44 +40,38 @@
 							<h3><%- prd.NamePrd%></h3>
 							<h2 class="productPrice"><%- (prd.SaleOff)?prd.PricePrd - prd.SaleOff : prd.PricePrd%></h2>
 							<% if(prd.SaleOff){%>
-							<h4 class="productPrice" style="text-decoration: line-through;color: #cccccc;margin-bottom: 0;"><%- prd.PricePrd%></h4>
-							<%}%>
-							<ul class="list">
-								<% nameCate = '';
-								metaCate = '';
-								cate.forEach(function(value) { %>
-									<% if (prd.IdCate === value.IDCate) { %>
-										<%
-										nameCate = value.NameCate
-										metaCate = value.MetaCate
-										%>
-									<% } %>
-								<% }) %>
-								<li><a class="active" href="/collections/<%- metaCate%>">
-									<li>
-										<span>Danh Mục</span>: <%- nameCate%>
-									</li>
-								<li><a href="#"><span>Availibility</span> : In Stock</a></li>
-							</ul>
-							<p>Mill Oil is an innovative oil filled radiator with the most modern technology. If you are
-								looking for
-								something that can make your interior look awesome, and at the same time give you the
-								pleasant warm feeling
-								during the winter.</p>
-							<div class="product_count">
-								<!-- <label for="qty">Quantity:</label>
-							<input type="text" name="qty" id="sst" maxlength="12" value="1" title="Quantity:" class="input-text qty">
-							<button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
-							 class="increase items-count" type="button"><i class="lnr lnr-chevron-up"></i></button>
-							<button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
-							 class="reduced items-count" type="button"><i class="lnr lnr-chevron-down"></i></button> -->
-							</div>
-							<div class="card_area d-flex align-items-center">
-								<button class="primary-btn" type="button" onclick="addToCart('<%- prd.IDPrd%>')">Thêm
-									vào giỏ hàng</button>
-								<a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a>
-								<a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a>
-							</div>
+								<h4 class="productPrice"
+									style="text-decoration: line-through;color: #cccccc;margin-bottom: 0;"><%-
+										prd.PricePrd%></h4>
+								<%}%>
+									<ul class="list">
+										<% nameCate='' ; metaCate='' ; cate.forEach(function(value) { %>
+											<% if (prd.IdCate===value.IDCate) { %>
+												<% 
+												nameCate = value.NameCate ;
+												 metaCate = value.MetaCate 
+												 %>
+													<% } %>
+														<% }) %>
+															<li><a class="active" href="/collections/<%- metaCate%>">
+															<li>
+																<span>Danh Mục</span>: <%- nameCate%>
+															</li>
+															</a>
+									</ul>
+									<div class="size-options">
+										<span class="size-item" data-size="S">S</span>
+										<span class="size-item" data-size="M">M</span>
+										<span class="size-item" data-size="L">L</span>
+										<span class="size-item" data-size="XL">XL</span>
+									</div>
+									<div class="card_area d-flex align-items-center">
+										<button class="primary-btn" type="button"
+											onclick="addToCart('<%- prd.IDPrd%>')">Thêm
+											vào giỏ hàng</button>
+										<a class="icon_btn" href="#"><i class="lnr lnr lnr-diamond"></i></a>
+										<a class="icon_btn" href="#"><i class="lnr lnr lnr-heart"></i></a>
+									</div>
 						</div>
 					</div>
 				</div>
@@ -291,23 +285,26 @@
 				<div class="row">
 					<div class="col-lg-9">
 						<div class="row">
-						<% salePrd.forEach(function(value){%>
-							<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
-								<div class="single-related-product d-flex">
-									<a href="/product/<%- value.MetaPrd%>"><img src="<%- value.ImgPrd%>" alt="" style="width: 100px;"></a>
-									<div class="desc">
-										<a href="<%- value.MetaPrd%>" class="title"><% const truncatedTextSale=value.NamePrd.length> 25 ?
-											value.NamePrd.substring(0, 34) + "..." : value.NamePrd;
-											%>
-											<%- truncatedTextSale%></a>
-										<div class="price" style="display: flex;flex-direction: column;">
-											<h6 class ="productPrice"><%- (value.PricePrd - value.SaleOff)%></h6>
-											<h6 class="l-through productPrice"><%- value.PricePrd%></h6>
+							<% salePrd.forEach(function(value){%>
+								<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
+									<div class="single-related-product d-flex">
+										<a href="/product/<%- value.MetaPrd%>"><img src="<%- value.ImgPrd%>" alt=""
+												style="width: 100px;"></a>
+										<div class="desc">
+											<a href="<%- value.MetaPrd%>" class="title">
+												<% const truncatedTextSale=value.NamePrd.length> 25 ?
+													value.NamePrd.substring(0, 34) + "..." : value.NamePrd;
+													%>
+													<%- truncatedTextSale%>
+											</a>
+											<div class="price" style="display: flex;flex-direction: column;">
+												<h6 class="productPrice"><%- (value.PricePrd - value.SaleOff)%></h6>
+												<h6 class="l-through productPrice"><%- value.PricePrd%></h6>
+											</div>
 										</div>
 									</div>
 								</div>
-							</div>
-						<%});%>	
+								<%});%>
 						</div>
 					</div>
 					<!-- <div class="col-lg-3">
@@ -326,80 +323,4 @@
 		<%- include('../footer')%>
 
 </body>
-<script>
-	document.addEventListener('DOMContentLoaded', () => {
-		let selectedStars = 0;
-		let idPrd = '<%= prd.IDPrd %>';
-		// Xử lý sự kiện hover và click cho ngôi sao
-		document.querySelectorAll('.star-transparent').forEach((star, index, stars) => {
-			star.addEventListener('mouseover', () => {
-				stars.forEach((s, i) => {
-					s.classList.toggle('hover', i <= index); // Áp dụng lớp hover cho các sao từ đầu đến sao hiện tại
-				});
-			});
-
-			star.addEventListener('mouseout', () => {
-				stars.forEach((s) => {
-					s.classList.remove('hover'); // Xóa lớp hover khi chuột rời khỏi ngôi sao
-				});
-			});
-
-			star.addEventListener('click', () => {
-				selectedStars = index + 1; // Lưu số sao đã chọn
-				stars.forEach((s, i) => {
-					s.classList.toggle('selected', i < selectedStars); // Áp dụng lớp selected cho các sao từ đầu đến sao đã chọn
-				});
-			});
-		});
-
-		// Xử lý sự kiện submit form
-		document.getElementById('reviewForm').addEventListener('submit', (event) => {
-			event.preventDefault(); // Ngăn không cho form gửi theo cách truyền thống
-
-			// Lấy dữ liệu số sao và bình luận
-			const comment = document.getElementById('message').value;
-
-			// Gửi dữ liệu đến server
-			fetch('/product/review', { // Đảm bảo URL đúng với router trên server
-				method: 'POST',
-				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ stars: selectedStars, comment: comment, idPrd: idPrd })
-			})
-				.then(response => response.json())
-				.then(data => {
-					// Tạo phần tử HTML mới cho review
-					const reviewList = document.querySelector('.review_list'); // Phần tử chứa danh sách review
-					const newReview = document.createElement('div');
-					newReview.classList.add('review_item');
-
-					// Tạo HTML từ dữ liệu trong form
-					newReview.innerHTML = `
-								<div class="media">
-									<div class="d-flex">
-										<img src="img/product/review.jpg" alt="" style="width: 60px;">
-									</div>
-									<div class="media-body">
-										<h4>Bạn</h4> <!-- Thay thế bằng tên người dùng thực tế nếu cần -->
-										${Array.from({ length: 5 }, (_, i) => i < selectedStars ?
-												'<i class="fa fa-star"></i>' : '<i class="fa fa-star-o"></i>'
-											).join('')}
-									</div>
-								</div>
-								<p>${comment}</p>
-							`;
-
-					// Thêm review mới vào danh sách
-					reviewList.prepend(newReview); // Thêm review vào đầu danh sách
-
-					// Xóa nội dung trong trường bình luận và reset selectedStars
-					document.getElementById('message').value = '';
-					selectedStars = 0;
-				})
-				.catch(error => console.error('Lỗi:', error));
-		});
-	});
-
-
-</script>
-
 </html>
