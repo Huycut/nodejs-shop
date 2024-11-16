@@ -580,13 +580,22 @@ $(document).ready(function(){
   number++;
 }
 function addToCart(id) {
+  // Lấy kích cỡ đã chọn
+  const selectedSizeElement = document.querySelector('.size-item.selected');
+  if (!selectedSizeElement) {
+      alert('Vui lòng chọn kích cỡ sản phẩm trước khi thêm vào giỏ hàng.');
+      return;
+  }
 
+  const selectedSize = selectedSizeElement.getAttribute('data-size');
+
+  // Gửi yêu cầu thêm sản phẩm vào giỏ hàng kèm kích cỡ
   fetch('/addToCart', {
       method: 'POST',
       headers: {
           'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ id: id }),
+      body: JSON.stringify({ id: id, size: selectedSize }),
   })
   .then(response => response.json())
   .then(data => {
@@ -596,6 +605,18 @@ function addToCart(id) {
       console.error('Error:', error);
   });
 }
+
+// Thêm sự kiện chọn kích cỡ
+document.querySelectorAll('.size-item').forEach(item => {
+  item.addEventListener('click', () => {
+      // Loại bỏ lớp `selected` khỏi các phần tử khác
+      document.querySelectorAll('.size-item').forEach(el => el.classList.remove('selected'));
+
+      // Thêm lớp `selected` vào phần tử được chọn
+      item.classList.add('selected');
+  });
+});
+
 document.addEventListener('DOMContentLoaded', () => {
   let selectedStars = 0;
   let idPrd = '<%= prd.IDPrd %>';

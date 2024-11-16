@@ -18,7 +18,7 @@ exports.index = function(req, res) {
 };
 exports.addToCart = function(req,res){
     let productId = req.body.id;
-    cart.addToCart(productId,function(result){
+    cart.addToCart(productId,req.body.size,function(result){
         if(result === 1){
             res.status(200).json({ success: 'Thêm vào giỏ hàng thành công' });
         }

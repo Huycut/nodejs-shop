@@ -36,7 +36,7 @@ exports.getProductByMeta = function (req, res) {
         page = req.query.page;
     }
     views.currentPage = parseInt(page);
-    views.check = 2;
+    views.check = 2;    
     arrayCate.forEach(function (value) {
         if (req.params.meta == value.MetaCate && value.ParentCate == 0) {
             check = {

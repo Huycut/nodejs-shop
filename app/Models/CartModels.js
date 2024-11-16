@@ -1,16 +1,16 @@
 const { func } = require('joi');
 const db = require('../commom/sqlHelper');
 var account = require('../Models/AccModels');
-exports.addToCart = function (id, result) {
+exports.addToCart = function (id,size, result) {
     if (account.currentAccount) {
         let accountID = account.currentAccount.idName;
         checkCart(accountID,id,function(resultCheck){
             if(resultCheck === 1){
                 result(2);
             }else{
-                db.query("INSERT INTO cart (IdAccount, IDPrd,quantity) VALUES (?, ?,?)", [accountID, id,1], function (err, value) {
+                db.query("INSERT INTO cart (IdAccount, IDPrd,quantity,size) VALUES (?, ?,?,?)", [accountID, id,1,size], function (err, value) {
                     if (err) {
-                        console.log('Error inserting into cart:', err);
+                        console.log('thêm vào giỏ hàng thất bại:', err);
                         result(0);
                     }
                     else {
