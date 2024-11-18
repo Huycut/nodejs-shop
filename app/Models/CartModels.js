@@ -25,7 +25,7 @@ exports.addToCart = function (id,size, result) {
 }
 exports.dataCart = function (result) {
     if (account.currentAccount) {
-        db.query(` SELECT product.ImgPrd, product.NamePrd, product.PricePrd,cart.quantity,cart.IDPrd,product.MetaPrd FROM cart 
+        db.query(` SELECT product.ImgPrd, product.NamePrd, product.PricePrd,cart.size,cart.quantity,cart.IDPrd,product.MetaPrd FROM cart 
         INNER JOIN account ON cart.IdAccount = account.IdAccount 
         INNER JOIN product ON cart.IDPrd = product.IDPrd 
         WHERE cart.IdAccount = ?`, account.currentAccount.idName, function (err,data) {
@@ -81,4 +81,16 @@ exports.deleteCart = function(idPrd,result){
             result(1);
         }
     })
+}
+exports.updateSize = function(idPrd,selectedSize,result){
+    if (account.currentAccount) {
+        db.query("update cart set size = ? where IdAccount = ? and IDPrd = ?",[selectedSize,account.currentAccount.idName,idPrd],function(err){
+            if(err){
+                console.log("lỗi khi cập nhập size");
+            }
+            else{
+                result(1);
+            }
+        })
+    }
 }

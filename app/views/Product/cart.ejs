@@ -31,35 +31,45 @@
                                     <th scope="col">Hình Ảnh</th>
                                     <th scope="col">Tên Sản Phẩm</th>
                                     <th scope="col">Giá</th>
+                                    <th scope="col">Size</th>
                                     <th scope="col">Số Lượng</th>
                                     <th scope="col">Tổng</th>
                                     <th scope="col">Xóa</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <% totalPrice=0; if(dataCart !='' ){ dataCart.forEach(function(value){%>
+                                <% totalPrice=0; if (dataCart !='' ) { dataCart.forEach(function(value) { %>
                                     <tr id="<%= value.IDPrd %>">
                                         <td>
-                                            <a href="http://localhost:3000/product/<%-value.MetaPrd%>">
+                                            <a href="http://localhost:3000/product/<%- value.MetaPrd %>">
                                                 <div class="media">
                                                     <div class="d-flex">
-                                                        <img src="<%- value.ImgPrd%>" alt="" style="width: 100px; ">
+                                                        <img src="<%- value.ImgPrd %>" alt="" style="width: 100px;">
                                                     </div>
                                                 </div>
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="http://localhost:3000/product/<%-value.MetaPrd%>">
-                                                <p><%- value.NamePrd%></p>
+                                            <a href="http://localhost:3000/product/<%- value.MetaPrd %>">
+                                                <p><%- value.NamePrd %></p>
                                             </a>
                                         </td>
                                         <td>
-                                            <h5 class="productPrice"><%- value.PricePrd%></h5>
+                                            <h5 class="productPrice"><%- value.PricePrd %></h5>
+                                        </td>
+                                        <!-- Cột Size -->
+                                        <td>
+                                            <select class="size-select"
+                                                onchange="updateSize('<%= value.IDPrd %>', this.value)">
+                                                <option value="S" <%=value.size==='S' ? 'selected' : '' %>>S</option>
+                                                <option value="M" <%=value.size==='M' ? 'selected' : '' %>>M</option>
+                                                <option value="L" <%=value.size==='L' ? 'selected' : '' %>>L</option>
+                                            </select>
                                         </td>
                                         <td>
                                             <div class="product_count">
                                                 <input type="text" name="qty" id="sst_<%= value.IDPrd %>" maxlength="12"
-                                                    value="<%- value.quantity%>" title="Quantity:"
+                                                    value="<%- value.quantity %>" title="Quantity:"
                                                     class="input-text qty" data-price="<%- value.PricePrd %>"
                                                     data-id="<%= value.IDPrd %>">
                                                 <button onclick="updateQuantity('<%= value.IDPrd %>', 1)"
@@ -74,73 +84,33 @@
                                         </td>
                                         <td>
                                             <h5 class="productPrice totalPrice_<%= value.IDPrd %>"><%- value.PricePrd *
-                                                    value.quantity%></h5>
+                                                    value.quantity %></h5>
                                         </td>
                                         <td>
-                                            <button type="button" onclick="deleteCart('<%= value.IDPrd %>')">Xóa</a>
+                                            <button type="button"
+                                                onclick="deleteCart('<%= value.IDPrd %>')">Xóa</button>
                                         </td>
                                     </tr>
-                                    <% totalPrice +=(value.PricePrd * value.quantity)%>
-                                        <%})}%>
+                                    <% totalPrice +=(value.PricePrd * value.quantity) %>
+                                        <% }) } %>
                                             <tr>
-                                                <td>
-
-                                                </td>
+                                                <td></td>
                                                 <td>
                                                     <h5>Tổng Tiền:</h5>
                                                 </td>
+                                                <td></td>
+                                                <td></td>
                                                 <td>
-
-                                                </td>
-                                                <td>
-                                                    <h5 id="subtotal"><%-totalPrice.toLocaleString('vi-VN', {
-                                                            style: 'currency' , currency: 'VND' })%></h5>
+                                                    <h5 id="subtotal">
+                                                        <%- totalPrice.toLocaleString('vi-VN', { style: 'currency' ,
+                                                            currency: 'VND' }) %>
+                                                    </h5>
                                                 </td>
                                             </tr>
-                                            <!-- <tr class="shipping_area">
-                                <td>
-
-                                </td>
-                                <td>
-
-                                </td>
-                                <td>
-                                    <h5>Shipping</h5>
-                                </td>
-                                <td>
-                                    <div class="shipping_box">
-                                        <ul class="list">
-                                            <li><a href="#">Flat Rate: $5.00</a></li>
-                                            <li><a href="#">Free Shipping</a></li>
-                                            <li><a href="#">Flat Rate: $10.00</a></li>
-                                            <li class="active"><a href="#">Local Delivery: $2.00</a></li>
-                                        </ul>
-                                        <h6>Calculate Shipping <i class="fa fa-caret-down" aria-hidden="true"></i></h6>
-                                        <select class="shipping_select">
-                                            <option value="1">Bangladesh</option>
-                                            <option value="2">India</option>
-                                            <option value="4">Pakistan</option>
-                                        </select>
-                                        <select class="shipping_select">
-                                            <option value="1">Select a State</option>
-                                            <option value="2">Select a State</option>
-                                            <option value="4">Select a State</option>
-                                        </select>
-                                        <input type="text" placeholder="Postcode/Zipcode">
-                                        <a class="gray_btn" href="#">Update Details</a>
-                                    </div>
-                                </td>
-                            </tr> -->
                                             <tr class="out_button_area">
-                                                <td>
-
-                                                </td>
-                                                <td>
-
-                                                </td>
-                                                <td>
-
-                                                </td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
                                                 <td>
                                                     <div class="checkout_btn_inner d-flex align-items-center">
                                                         <a class="gray_btn" href="http://localhost:3000/product">Tiếp
@@ -151,6 +121,7 @@
                                             </tr>
                             </tbody>
                         </table>
+
                     </div>
                 </div>
             </div>
@@ -244,6 +215,20 @@
                 console.error('Lỗi kết nối:', error);
             });
     }
+    function updateSize(productId, selectedSize) {
+        fetch(`update-size`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ productId, size: selectedSize }),
+        })
+            .then(response => response.json())
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }
+
 </script>
 
 </html>

@@ -45,3 +45,11 @@ exports.deleteCart = function(req,res){
         }
     })
 }
+exports.updateSize = function(req,res){
+    const { productId, size } = req.body;
+    cart.updateSize(productId,size,function(result){
+        if(result ===1 ){
+            res.json({ success: true });
+        }
+    });
+}
