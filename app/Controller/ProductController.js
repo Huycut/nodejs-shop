@@ -117,4 +117,10 @@ exports.insertReview = function (req, res) {
     // Trả về phản hồi cho client
     res.json({ message: 'Nhận dữ liệu thành công', stars, comment });
 }
+exports.search = function (req,res){
+    var valueSearch = req.body.keyword;
+    product.search(valueSearch,function(dataSearch){
+        res.json({data:dataSearch,dataSale:product.productsOnSale});
+    });
+}
 

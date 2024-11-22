@@ -1,5 +1,6 @@
 const { func } = require('joi');
 const db = require('../commom/sqlHelper');
+const { name } = require('ejs');
 const categori = function (Categori) {
     this.id = Categori.IDCate;
     this.nameCate = Categori.NameCate;
@@ -156,6 +157,16 @@ db.query(`select sale.SaleOff,product.NamePrd,product.PricePrd,product.ImgPrd,pr
         );
     }
 })
+product.search = function (valueSearch,result){
+    db.query('SELECT * FROM product WHERE NamePrd LIKE ? ',[`${valueSearch}%`],function(err,value){
+        if(err){
+            console.log("Lỗi khi tìm kiếm");
+        }
+        else{
+            result(value);
+        }
+    });
+}
 
 
 
