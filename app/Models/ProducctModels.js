@@ -157,13 +157,24 @@ db.query(`select sale.SaleOff,product.NamePrd,product.PricePrd,product.ImgPrd,pr
         );
     }
 })
-product.search = function (valueSearch,result){
-    db.query('SELECT * FROM product WHERE NamePrd LIKE ? ',[`${valueSearch}%`],function(err,value){
+product.search = function (valueSearch,page,result){
+    let limit = 6;
+    let offset = (page - 1) * limit;
+    db.query('SELECT * FROM product WHERE NamePrd LIKE ? limit ' + limit + ' offset ' + offset,[`${valueSearch}%`],function(err,value){
         if(err){
             console.log("Lỗi khi tìm kiếm");
         }
         else{
             result(value);
+        }
+    });
+}
+product.getColumPageBySearch = function(valueSearch,callback){
+    db.query('SELECT COUNT(*) AS total FROM product WHERE NamePrd LIKE ? ',[`${valueSearch}%`],function(err,value){
+        if(err){
+            console.log("Lỗi khi truy vấn số lượng tìm kiếm");
+        }else{
+            callback(value);
         }
     });
 }

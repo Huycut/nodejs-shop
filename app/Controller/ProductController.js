@@ -1,5 +1,6 @@
 const { array, func } = require("joi");
-var { categori, product } = require("../Models/ProducctModels")
+var { categori, product } = require("../Models/ProducctModels");
+const { resume } = require("../commom/sqlHelper");
 
 var views = {
     header: 'header',
@@ -118,9 +119,23 @@ exports.insertReview = function (req, res) {
     res.json({ message: 'Nhận dữ liệu thành công', stars, comment });
 }
 exports.search = function (req,res){
-    var valueSearch = req.body.keyword;
-    product.search(valueSearch,function(dataSearch){
-        res.json({data:dataSearch,dataSale:product.productsOnSale});
+    const valueSearch = req.query.keyword;
+    if (!req.query.page) { page = 1 }
+    else {
+        page = req.query.page;
+    }
+    console.log(page);
+    views.currentPage = parseInt(page);
+    views.check = 3;
+    views.keyword = valueSearch;
+    product.getColumPageBySearch(valueSearch,function(count){
+        views.pagination = count;
+    });
+    product.search(valueSearch,page,function(dataSearch){
+        //res.json({data:dataSearch,dataSale:product.productsOnSale});
+        views.salePrd = product.productsOnSale;
+        views.prd = dataSearch;
+        res.render('Product/allProduct', views);
     });
 }
 

@@ -21,7 +21,7 @@ module.exports = function(router){
     router.get('/collections/:meta',ProductController.getProductByMeta);// in ra sản phẩm theo danh mục
     router.get('/product/:metaPrd',ProductController.getDataProduct);// in ra thông tin sản phẩm
     router.post('/product/review',ProductController.insertReview);
-    router.post('/search',ProductController.search);// tìm kiếm sản phẩm
-    
+    //router.get('/search',ProductController.search);// tìm kiếm sản phẩm bằng ajax
+    router.get('/search/',ProductController.search);
 }
 
