@@ -23,5 +23,7 @@ module.exports = function(router){
     router.post('/product/review',ProductController.insertReview);
     //router.get('/search',ProductController.search);// tìm kiếm sản phẩm bằng ajax
     router.get('/search/',ProductController.search);
+    //
+    router.get('/checkout',CartController.checkout);
 }
 

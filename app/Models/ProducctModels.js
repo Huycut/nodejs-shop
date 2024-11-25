@@ -174,7 +174,7 @@ product.getColumPageBySearch = function(valueSearch,callback){
         if(err){
             console.log("Lỗi khi truy vấn số lượng tìm kiếm");
         }else{
-            callback(value);
+            callback(value[0].total);
         }
     });
 }

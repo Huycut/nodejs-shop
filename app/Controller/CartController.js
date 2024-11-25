@@ -53,3 +53,6 @@ exports.updateSize = function(req,res){
         }
     });
 }
+exports.checkout = (req,res) =>{
+    res.render('checkout',views);
+};
