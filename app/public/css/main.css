@@ -5847,5 +5847,9 @@ label {
   color: white; /* Màu chữ */
   border-color: #007bff; /* Màu viền */
 }
+.nice-select .list {
+  max-height: 150px; /* Giới hạn chiều cao danh sách */
+  overflow-y: auto;  /* Thanh cuộn dọc */
+}
 
 

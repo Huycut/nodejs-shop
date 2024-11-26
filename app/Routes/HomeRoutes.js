@@ -25,5 +25,6 @@ module.exports = function(router){
     router.get('/search/',ProductController.search);
     //
     router.get('/checkout',CartController.checkout);
+    router.get('/api/districts',CartController.districts);
 }
 
