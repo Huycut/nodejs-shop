@@ -32,19 +32,19 @@
                             <h3>Thông tin</h3>
                             <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                                 <div class="col-md-6 form-group p_star">
-                                    <input type="text" class="form-control" id="first" name="fist_name">
+                                    <input type="text" class="form-control" id="first" name="fist_name" oninput="togglePlaceholder(this)">
                                     <span class="placeholder" data-placeholder="Tên Họ"></span>
                                 </div>
                                 <div class="col-md-6 form-group p_star">
-                                    <input type="text" class="form-control" id="last" name="last_name">
+                                    <input type="text" class="form-control" id="last" name="last_name" oninput="togglePlaceholder(this)">
                                     <span class="placeholder" data-placeholder="Tên"></span>
                                 </div>
                                 <div class="col-md-6 form-group p_star">
-                                    <input type="text" class="form-control" id="number" name="number_phone">
+                                    <input type="text" class="form-control" id="number" name="number_phone" oninput="togglePlaceholder(this)">
                                     <span class="placeholder" data-placeholder="Số Điện Thoại"></span>
                                 </div>
                                 <div class="col-md-6 form-group p_star">
-                                    <input type="text" class="form-control" id="email" name="email">
+                                    <input type="text" class="form-control" id="email" name="email" oninput="togglePlaceholder(this)">
                                     <span class="placeholder" data-placeholder="Email"></span>
                                 </div>
                                 <div class="col-md-12 form-group p_star">
@@ -63,23 +63,12 @@
                                     </select>
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="text" class="form-control" id="address" name="address">
+                                    <input type="text" class="form-control" id="address" name="address" oninput="togglePlaceholder(this)">
                                     <span class="placeholder" data-placeholder="Địa chỉ"></span>
                                 </div>
                                 <div class="col-md-12 form-group">
-                                    <div class="creat_account">
-                                        <input type="checkbox" id="f-option2" name="selector">
-                                        <label for="f-option2">Create an account?</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 form-group">
-                                    <div class="creat_account">
-                                        <h3>Shipping Details</h3>
-                                        <input type="checkbox" id="f-option3" name="selector">
-                                        <label for="f-option3">Ship to a different address?</label>
-                                    </div>
                                     <textarea class="form-control" name="message" id="message" rows="1"
-                                        placeholder="Order Notes"></textarea>
+                                        placeholder="Ghi chú"></textarea>
                                 </div>
                             </form>
                         </div>
@@ -138,33 +127,12 @@
         <%- include('footer')%>
 </body>
 <script>
-    function loadDistricts(provinceCode) {
-        // Gọi API để lấy danh sách huyện 
-        fetch(`/api/districts?provinceCode=${provinceCode}`)
-            .then(response => response.json())
-            .then(data => {
-                console.log(data);
-                // Làm sạch các lựa chọn hiện tại của dropdown huyện
-                const districtSelect = document.getElementById("districtSelect");
-                districtSelect.innerHTML = `<option value="" selected disabled>Huyệns</option>`; // Reset lại dropdown
-                
-                // Kiểm tra nếu có dữ liệu huyện trả về
-                if (data && data.length > 0) {
-                    // Thêm các huyện vào dropdown
-                    data.forEach(district => {
-                        const option = document.createElement("option");
-                        option.value = district.code;
-                        option.textContent = district.name_with_type;
-                        districtSelect.appendChild(option);
-                    });
-                } else {
-                    // Nếu không có huyện, hiển thị thông báo
-                    const option = document.createElement("option");
-                    option.value = "";
-                    option.textContent = "Không có huyện cho tỉnh này";
-                    districtSelect.appendChild(option);
-                }
-            })
-            .catch(error => console.error('Error:', error));
+    function togglePlaceholder(input) {
+        const placeholder = input.nextElementSibling; // Tìm span gần input
+        if (input.value.trim()) {
+            placeholder.style.display = 'none'; // Ẩn placeholder
+        } else {
+            placeholder.style.display = 'block'; // Hiển thị lại nếu rỗng
+        }
     }
 </script>

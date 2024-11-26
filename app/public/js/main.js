@@ -708,96 +708,36 @@ sizeItems.forEach(item => {
     console.log("Selected size:", selectedSize);
   });
 });
+function loadDistricts(provinceCode) {
+  // Gọi API để lấy danh sách huyện 
+  fetch(`/api/districts?provinceCode=${provinceCode}`)
+      .then(response => response.json())
+      .then(data => {
+          
+          // Làm sạch các lựa chọn hiện tại của dropdown huyện
+          const districtSelect = document.getElementById("districtSelect");
+          districtSelect.innerHTML = `<option value="" selected disabled>Huyệns</option>`; // Reset lại dropdown
+          console.log(data);
+          // Kiểm tra nếu có dữ liệu huyện trả về
+          if (data && data.length > 0) {
+              data.forEach(district => {
+                  const option = document.createElement("option");
+                  option.value = district.code;
+                  option.textContent = district.name_with_type;
+                  districtSelect.appendChild(option);
+                  $(districtSelect).niceSelect('update');
+              });
+          } else {
+              // Nếu không có huyện, hiển thị thông báo
+              const option = document.createElement("option");
+              option.value = "";
+              option.textContent = "Không có huyện cho tỉnh này";
+              districtSelect.appendChild(option);
+          }
+      })
+      .catch(error => console.error('Error:', error));
+}
 
-// Chức năng tìm kiếm
-// Bắt sự kiện submit
-// document.querySelector('.search_input form').addEventListener('submit', function (e) {
-//   e.preventDefault(); // Ngăn trình duyệt reload trang
-
-//   const searchKeyword = document.getElementById('search_input').value.trim();
-
-//   if (searchKeyword) {
-//     console.log('Tìm kiếm:', searchKeyword);
-
-//     // Gửi từ khóa tới server bằng GET
-//     fetch(`/search?keyword=${searchKeyword}`, {
-//       method: 'GET',
-//     })
-//       .then(response => response.json())
-//       .then(data => {
-//         console.log('Kết quả:', data);
-//         renderProducts(data.data, data.dataSale);
-//         // Hiển thị kết quả (hàm tự định nghĩa)
-//       })
-//       .catch(error => console.error('Lỗi:', error));
-//   } else {
-//     alert('Vui lòng nhập từ khóa!');
-//   }
-// });
-
-// function renderProducts(products, dataSale) {
-//   // Xóa nội dung cũ
-//   const productContainer = document.querySelector('.row.list-product');
-//   productContainer.innerHTML = '';
-
-//   // Kiểm tra nếu không có sản phẩm
-//   if (products.length === 0) {
-//     productContainer.innerHTML = '<p>Không có sản phẩm nào được tìm thấy.</p>';
-//     return;
-//   }
-
-//   // Lặp qua từng sản phẩm và tạo HTML
-//   products.forEach(value => {
-//     let onSale = false;
-//     let salePrice = 0;
-
-//     dataSale.forEach(saleItem => {
-//       if (value.NamePrd === saleItem.NamePrd) {
-//         onSale = true;
-//         salePrice = saleItem.SaleOff;
-//       }
-//     });
-//     const formatCurrency = (amount) => {
-//       return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount);
-//     };
-
-//     const productPrice = onSale ? formatCurrency(value.PricePrd - salePrice) : formatCurrency(value.PricePrd);
-//     const originalPrice = onSale ? formatCurrency(value.PricePrd) : "";
-
-//     const truncatedText =
-//       value.NamePrd.length > 25 ? value.NamePrd.substring(0, 20) + "..." : value.NamePrd;
-
-//     const productHTML = `
-//       <div class="col-lg-4 col-md-6">
-//         <div class="single-product">
-//           <a href="http://localhost:3000/product/${value.MetaPrd}">
-//             <img class="img-fluid" src="${value.ImgPrd}" alt="">
-//             <div class="product-details">
-//               <h6>${truncatedText}</h6>
-//               <div class="price">
-//                 <h6 class="productPrice">${productPrice}</h6>
-//                 ${onSale ? `<h6 class="l-through productPrice">${originalPrice}</h6>` : ""}
-//               </div>
-            
-//           </a>
-//           <div class="prd-bottom">
-//             <button class="social-info" type="button" onclick="addToCart('${value.IDPrd}')">
-//               <span class="ti-bag"></span>
-//               <p class="hover-text">Thêm vào giỏ hàng</p>
-//             </button>
-//             <button class="social-info" type="button">
-//               <span class="lnr lnr-heart"></span>
-//               <p class="hover-text">Wishlist</p>
-//             </button>
-//           </div>
-//         </div>
-//       </div>
-//     `;
-
-//     // Thêm HTML vào container
-//     productContainer.insertAdjacentHTML('beforeend', productHTML);
-//   });
-// }
 
 
 

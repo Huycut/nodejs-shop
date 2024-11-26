@@ -2,7 +2,6 @@ const { func } = require('joi');
 const axios = require('axios');
 var cart = require('../Models/CartModels');
 const provinces = 'https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1';
-const districts = 'https://vn-public-apis.fpo.vn/districts/getAll?limit=-1'
 var views = {
     header: 'header',
     footer: 'footer',
@@ -69,10 +68,10 @@ exports.checkout = async (req, res) => {
 exports.districts = async (req, res) => {
     var provinceCode = req.query.provinceCode;
     try {
+        const districts = 'https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode='+provinceCode+'&limit=-1';
         const response_districts = await axios.get(districts);
         const valuesArray = Object.values(response_districts.data.data);
-        const filteredDistricts = valuesArray[2].filter(district => String(district.parent_code) === String(provinceCode));
-        res.json(filteredDistricts);
+        res.json(valuesArray[2]);
     } catch (error) {
         console.error("looi" +error.message);
     }
