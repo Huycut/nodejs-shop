@@ -722,8 +722,8 @@ function loadDistricts(provinceCode) {
           if (data && data.length > 0) {
               data.forEach(district => {
                   const option = document.createElement("option");
-                  option.value = district.code;
-                  option.textContent = district.name_with_type;
+                  option.value = district.district_id;
+                  option.textContent = district.district_name;
                   districtSelect.appendChild(option);
                   $(districtSelect).niceSelect('update');
               });

@@ -50,9 +50,9 @@
                                 <div class="col-md-12 form-group p_star">
                                     <select class="country_select" onchange="loadDistricts(this.value)">
                                         <option value="Tỉnh" selected disabled>Tỉnh</option>
-                                        <% provinces.data.forEach(provincess=> { %>
-                                            <option value="<%= provincess.code %>">
-                                                <%= provincess.name_with_type %>
+                                        <% provinces.forEach(provincess=> { %>
+                                            <option value="<%= provincess.province_id %>">
+                                                <%= provincess.province_name %>
                                             </option>
                                             <% }) %>
                                     </select>
@@ -74,18 +74,19 @@
                         </div>
                         <div class="col-lg-4">
                             <div class="order_box">
-                                <h2>Your Order</h2>
+                                <h2>Đơn hàng của bạn</h2>
                                 <ul class="list">
-                                    <li><a href="#">Product <span>Total</span></a></li>
-                                    <li><a href="#">Fresh Blackberry <span class="middle">x 02</span> <span
-                                                class="last">$720.00</span></a></li>
-                                    <li><a href="#">Fresh Tomatoes <span class="middle">x 02</span> <span
-                                                class="last">$720.00</span></a></li>
-                                    <li><a href="#">Fresh Brocoli <span class="middle">x 02</span> <span
-                                                class="last">$720.00</span></a></li>
+                                    <li><a href="#">Sản phẩm <span>Tổng</span></a></li>
+                                    <!-- <li><a href="#">Fresh Blackberry <span class="middle">x 02</span> <span
+                                                class="last">$720.00</span></a></li> -->
+                                    <% totalPrice=0; dataCart.forEach((value)=>{%>
+                                        <li><a href="#"> <span class="middle">x <%- value.quantity %></span> <span
+                                                class="last"><%- value.PricePrd %></span></a></li>
+                                    <%totalPrice +=(value.PricePrd * value.quantity)})%>
+
                                 </ul>
                                 <ul class="list list_2">
-                                    <li><a href="#">Subtotal <span>$2160.00</span></a></li>
+                                    <li><a href="#">Subtotal <span><%- totalPrice%></span></a></li>
                                     <li><a href="#">Shipping <span>Flat rate: $50.00</span></a></li>
                                     <li><a href="#">Total <span>$2210.00</span></a></li>
                                 </ul>

@@ -1,7 +1,7 @@
 const { func } = require('joi');
 const axios = require('axios');
 var cart = require('../Models/CartModels');
-const provinces = 'https://vn-public-apis.fpo.vn/provinces/getAll?limit=-1';
+const provinces = 'https://vapi.vnappmob.com/api/province/';
 var views = {
     header: 'header',
     footer: 'footer',
@@ -57,21 +57,20 @@ exports.updateSize = function (req, res) {
 exports.checkout = async (req, res) => {
     try {
         const response_provinces = await axios.get(provinces);
-        views.provinces = response_provinces.data.data;
-        const response_districts = await axios.get(districts);
-        views.districts = response_districts.data.data;
+        views.provinces = response_provinces.data.results;
     } catch (error) {
         console.error(error.message);
     }
     res.render('checkout', views);
+
 };
 exports.districts = async (req, res) => {
     var provinceCode = req.query.provinceCode;
     try {
-        const districts = 'https://vn-public-apis.fpo.vn/districts/getByProvince?provinceCode='+provinceCode+'&limit=-1';
+        const districts = 'https://vapi.vnappmob.com/api/province/district/'+provinceCode;
         const response_districts = await axios.get(districts);
-        const valuesArray = Object.values(response_districts.data.data);
-        res.json(valuesArray[2]);
+        const valuesArray = Object.values(response_districts.data.results);
+        res.json(valuesArray);
     } catch (error) {
         console.error("looi" +error.message);
     }
