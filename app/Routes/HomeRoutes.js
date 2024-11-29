@@ -26,5 +26,7 @@ module.exports = function(router){
     //
     router.get('/checkout',CartController.checkout);
     router.get('/api/districts',CartController.districts);
+    router.post('/create_payment_url',CartController.payment);
+
 }
 

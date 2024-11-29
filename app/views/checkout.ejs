@@ -28,7 +28,7 @@
                 </div>
                 <div class="billing_details">
                     <div class="row">
-                        <div class="col-lg-8">
+                        <div class="col-lg-7">
                             <h3>Thông tin</h3>
                             <form class="row contact_form" action="#" method="post" novalidate="novalidate">
                                 <div class="col-md-6 form-group p_star">
@@ -72,7 +72,7 @@
                                 </div>
                             </form>
                         </div>
-                        <div class="col-lg-4">
+                        <div class="col-lg-5">
                             <div class="order_box">
                                 <h2>Đơn hàng của bạn</h2>
                                 <ul class="list">
@@ -80,40 +80,38 @@
                                     <!-- <li><a href="#">Fresh Blackberry <span class="middle">x 02</span> <span
                                                 class="last">$720.00</span></a></li> -->
                                     <% totalPrice=0; dataCart.forEach((value)=>{%>
-                                        <li><a href="#"> <span class="middle">x <%- value.quantity %></span> <span
-                                                class="last"><%- value.PricePrd %></span></a></li>
+                                        <li><a  href="#"> <%-
+                                            value.NamePrd.substring(0, 15) + "..." ;
+                                            %>
+                                            <span class="middle">x <%- value.quantity %></span> <span
+                                                class="last productPrice"><%- value.PricePrd %></span></a></li>
                                     <%totalPrice +=(value.PricePrd * value.quantity)})%>
 
                                 </ul>
                                 <ul class="list list_2">
-                                    <li><a href="#">Subtotal <span><%- totalPrice%></span></a></li>
-                                    <li><a href="#">Shipping <span>Flat rate: $50.00</span></a></li>
-                                    <li><a href="#">Total <span>$2210.00</span></a></li>
+                                    <% shipping = 50000%>
+                                    <li><a href="#">Tổng tiền hàng <span class="productPrice"><%- totalPrice%></span></a></li>
+                                    <li><a href="#">Phí vận chuyển <span class="productPrice"><%- shipping%></span></a></li>
+                                    <li><a href="#">Tổng thanh toán <span class="productPrice"><%- totalPrice+= shipping%></span></a></li>
                                 </ul>
                                 <div class="payment_item">
                                     <div class="radion_btn">
                                         <input type="radio" id="f-option5" name="selector">
-                                        <label for="f-option5">Check payments</label>
+                                        <label for="f-option5">Thanh toán bằng tiền mặt</label>
                                         <div class="check"></div>
                                     </div>
-                                    <p>Please send a check to Store Name, Store Street, Store Town, Store State /
-                                        County,
-                                        Store Postcode.</p>
+                                    <p>Thanh toán bằng tiền mặt khi người vận chuyển giao hàng tới</p>
                                 </div>
                                 <div class="payment_item active">
                                     <div class="radion_btn">
                                         <input type="radio" id="f-option6" name="selector">
-                                        <label for="f-option6">Paypal </label>
+                                        <label for="f-option6">Thanh toán bằng ngân hàng </label>
                                         <img src="img/product/card.jpg" alt="">
                                         <div class="check"></div>
                                     </div>
+                                    <img src = "https://img.vietqr.io/image/MB-10129052003-print.png?amount=<%- totalPrice+= shipping%>&addInfo=Ck">
                                     <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
                                         account.</p>
-                                </div>
-                                <div class="creat_account">
-                                    <input type="checkbox" id="f-option4" name="selector">
-                                    <label for="f-option4">I’ve read and accept the </label>
-                                    <a href="#">terms & conditions*</a>
                                 </div>
                                 <a class="primary-btn" href="#">Proceed to Paypal</a>
                             </div>
