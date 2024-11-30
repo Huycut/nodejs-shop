@@ -109,11 +109,14 @@
                                         <img src="img/product/card.jpg" alt="">
                                         <div class="check"></div>
                                     </div>
-                                    <img src = "https://img.vietqr.io/image/MB-10129052003-print.png?amount=<%- totalPrice+= shipping%>&addInfo=Ck">
+                                    <!-- <img src = "https://img.vietqr.io/image/MB-10129052003-print.png?amount=<%- totalPrice+= shipping%>&addInfo=Ck"> -->
                                     <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
                                         account.</p>
                                 </div>
-                                <a class="primary-btn" href="#">Proceed to Paypal</a>
+                                <form action='create_payment_url', method='POST'>
+                                    <input type="hidden" name="amount" value="<%- totalPrice+= shipping%>">
+                                    <button class="primary-btn" href="#">Mua hàng</a>
+                                </form>
                             </div>
                         </div>
                     </div>
