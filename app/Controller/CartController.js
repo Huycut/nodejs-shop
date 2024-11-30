@@ -153,7 +153,7 @@ exports.vnpayReturn = (req,res)=>{
 
     if(secureHash === signed){
         //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-        console.log('1');
+        res.render('confirmation',views);
         // res.render('success', {code: vnp_Params['vnp_ResponseCode']})
     } else{
         // res.render('success', {code: '97'})

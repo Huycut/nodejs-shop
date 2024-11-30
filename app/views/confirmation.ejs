@@ -1,0 +1,120 @@
+
+<body>
+	<!-- Start Header Area -->
+	<%- include('header') %>
+	<!-- End Header Area -->
+
+	<!-- Start Banner Area -->
+	<section class="banner-area organic-breadcrumb">
+		<div class="container">
+			<div class="breadcrumb-banner d-flex flex-wrap align-items-center justify-content-end">
+				<div class="col-first">
+					<h1>Confirmation</h1>
+					<nav class="d-flex align-items-center">
+						<a href="index.html">Home<span class="lnr lnr-arrow-right"></span></a>
+						<a href="category.html">Confirmation</a>
+					</nav>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!-- End Banner Area -->
+
+	<!--================Order Details Area =================-->
+	<section class="order_details section_gap">
+		<div class="container">
+			<h3 class="title_confirmation">Cảm ơn bạn. Đơn hàng của bạn đã được đặt</h3>
+			<div class="row order_d_inner">
+				<div class="col-lg-5">
+					<div class="details_item">
+						<h4>Thông tin đơn hàng</h4>
+						<ul class="list">
+							<li><a href="#"><span>Mã đơn hàng</span> : 60235</a></li>
+							<li><a href="#"><span>Ngày</span> : Los Angeles</a></li>
+							<li><a href="#"><span>Hình thức thanh toán</span> : Thanh toán bằng ngân hàng</a></li>
+						</ul>
+					</div>
+				</div>
+				<div class="col-lg-5">
+					<div class="details_item">
+						<h4>Địa chỉ giao hàng</h4>
+						<ul class="list">
+							<li><a href="#"><span>Địa chỉ</span> : 56/8</a></li>
+							<li><a href="#"><span>TP/Huyện</span> : Los Angeles</a></li>
+							<li><a href="#"><span>Tỉnh</span> : United States</a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+			<div class="order_details_table">
+				<h2>Chi tiết đơn hàng</h2>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th scope="col">Sản phẩm</th>
+								<th scope="col">Số lượng</th>
+								<th scope="col">Tổng</th>
+							</tr>
+						</thead>
+						<tbody>
+							<%  shipping = 50000;totalPrice=0; dataCart.forEach((value)=>{%>
+							<tr>
+								<td>
+									<p><%- value.NamePrd%></p>
+								</td>
+								<td>
+									<h5>x <%- value.quantity %></h5>
+								</td>
+								<td>
+									<p class="productPrice"><%- value.PricePrd*value.quantity %></p>
+								</td>
+							</tr>
+							<%totalPrice +=(value.PricePrd * value.quantity)})%>
+
+							<tr>
+								<td>
+									<h4>Tổng tiền hàng</h4>
+								</td>
+								<td>
+									<h5></h5>
+								</td>
+								<td>
+									<p class="productPrice"><%- totalPrice%></p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h4>Phí vận chuyển</h4>
+								</td>
+								<td>
+									<h5></h5>
+								</td>
+								<td>
+									<p class="productPrice"><%- shipping%></p>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<h4>Tổng thanh toán</h4>
+								</td>
+								<td>
+									<h5></h5>
+								</td>
+								<td>
+									<p class="productPrice"><%- totalPrice+= shipping%></p>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</section>
+	<!--================End Order Details Area =================-->
+	<!-- start footer Area -->
+	<%- include('footer')%>
+	<!-- End footer Area -->
+</body>
+
+</html>

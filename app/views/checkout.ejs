@@ -84,7 +84,7 @@
                                             value.NamePrd.substring(0, 15) + "..." ;
                                             %>
                                             <span class="middle">x <%- value.quantity %></span> <span
-                                                class="last productPrice"><%- value.PricePrd %></span></a></li>
+                                                class="last productPrice"><%- value.PricePrd * value.quantity %></span></a></li>
                                     <%totalPrice +=(value.PricePrd * value.quantity)})%>
 
                                 </ul>
