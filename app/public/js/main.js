@@ -708,16 +708,19 @@ sizeItems.forEach(item => {
     console.log("Selected size:", selectedSize);
   });
 });
-function loadDistricts(provinceCode) {
+function loadDistricts(province) {
+  // Lấy tên tỉnh từ text của tùy chọn được chọn
+  const provinceName = province.options[province.selectedIndex].text;
+  // Cập nhật giá trị của hidden input
+  document.getElementById('provinceName').value = provinceName;
   // Gọi API để lấy danh sách huyện 
-  fetch(`/api/districts?provinceCode=${provinceCode}`)
+  fetch(`/api/districts?provinceCode=${province.value}`)
       .then(response => response.json())
       .then(data => {
           
           // Làm sạch các lựa chọn hiện tại của dropdown huyện
           const districtSelect = document.getElementById("districtSelect");
           districtSelect.innerHTML = `<option value="" selected disabled>Huyệns</option>`; // Reset lại dropdown
-          console.log(data);
           // Kiểm tra nếu có dữ liệu huyện trả về
           if (data && data.length > 0) {
               data.forEach(district => {
@@ -736,6 +739,29 @@ function loadDistricts(provinceCode) {
           }
       })
       .catch(error => console.error('Error:', error));
+}
+function togglePlaceholder(input) {
+  const placeholder = input.nextElementSibling; // Tìm span gần input
+  if (input.value.trim()) {
+      placeholder.style.display = 'none'; // Ẩn placeholder
+  } else {
+      placeholder.style.display = 'block'; // Hiển thị lại nếu rỗng
+  }
+}
+function updateProvince(select) {
+  // Lấy tên tỉnh từ text của tùy chọn được chọn
+  const provinceName = select.options[select.selectedIndex].text;
+  // Cập nhật giá trị của hidden input
+  document.getElementById('provinceName').value = provinceName;
+
+  // Load danh sách huyện dựa trên province_id
+}
+
+function updateDistrict(select) {
+  // Lấy tên huyện từ text của tùy chọn được chọn
+  const districtName = select.options[select.selectedIndex].text;
+  // Cập nhật giá trị của hidden input
+  document.getElementById('districtName').value = districtName;
 }
 
 

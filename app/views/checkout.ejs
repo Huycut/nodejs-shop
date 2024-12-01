@@ -27,28 +27,28 @@
                     <a class="tp_btn" href="#">Áp dụng phiếu giảm giá</a>
                 </div>
                 <div class="billing_details">
-                    <div class="row">
-                        <div class="col-lg-7">
-                            <h3>Thông tin</h3>
-                            <form class="row contact_form" action="#" method="post" novalidate="novalidate">
+                    <form class="row contact_form" action="create_payment_url" method="post" novalidate="novalidate">
+                        <div class="row">
+                            <div class="col-lg-7">
+                                <h3>Thông tin</h3>
                                 <div class="col-md-6 form-group p_star">
-                                    <input type="text" class="form-control" id="first" name="fist_name" oninput="togglePlaceholder(this)">
-                                    <span class="placeholder" data-placeholder="Tên Họ"></span>
+                                    <input type="text" class="form-control" id="first" name="rptName"
+                                        oninput="togglePlaceholder(this)">
+                                    <span class="placeholder" data-placeholder="Tên người nhận"></span>
                                 </div>
                                 <div class="col-md-6 form-group p_star">
-                                    <input type="text" class="form-control" id="last" name="last_name" oninput="togglePlaceholder(this)">
-                                    <span class="placeholder" data-placeholder="Tên"></span>
-                                </div>
-                                <div class="col-md-6 form-group p_star">
-                                    <input type="text" class="form-control" id="number" name="number_phone" oninput="togglePlaceholder(this)">
+                                    <input type="text" class="form-control" id="number" name="numberP"
+                                        oninput="togglePlaceholder(this)">
                                     <span class="placeholder" data-placeholder="Số Điện Thoại"></span>
                                 </div>
                                 <div class="col-md-6 form-group p_star">
-                                    <input type="text" class="form-control" id="email" name="email" oninput="togglePlaceholder(this)">
+                                    <input type="text" class="form-control" id="email" name="email"
+                                        oninput="togglePlaceholder(this)">
                                     <span class="placeholder" data-placeholder="Email"></span>
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-                                    <select class="country_select" onchange="loadDistricts(this.value)">
+                                    <select class="country_select" onchange="loadDistricts(this)"
+                                        name="province_id">
                                         <option value="Tỉnh" selected disabled>Tỉnh</option>
                                         <% provinces.forEach(provincess=> { %>
                                             <option value="<%= provincess.province_id %>">
@@ -56,70 +56,75 @@
                                             </option>
                                             <% }) %>
                                     </select>
+                                    <input type="hidden" id="provinceName" name="province_name" value="">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-                                    <select class="country_select" id="districtSelect">
-                                        <option value="" selected disabled>Huyện</option>
+                                    <select class="country_select" onchange="updateDistrict(this)" id="districtSelect" name="district_id">
+                                        <option name="district" value="" selected disabled>Huyện</option>
                                     </select>
+                                    <input type="hidden" id="districtName" name="district_name" value="">
                                 </div>
                                 <div class="col-md-12 form-group p_star">
-                                    <input type="text" class="form-control" id="address" name="address" oninput="togglePlaceholder(this)">
+                                    <input type="text" class="form-control" id="address" name="address"
+                                        oninput="togglePlaceholder(this)">
                                     <span class="placeholder" data-placeholder="Địa chỉ"></span>
                                 </div>
                                 <div class="col-md-12 form-group">
-                                    <textarea class="form-control" name="message" id="message" rows="1"
+                                    <textarea class="form-control" name="note" id="message" rows="1"
                                         placeholder="Ghi chú"></textarea>
                                 </div>
-                            </form>
-                        </div>
-                        <div class="col-lg-5">
-                            <div class="order_box">
-                                <h2>Đơn hàng của bạn</h2>
-                                <ul class="list">
-                                    <li><a href="#">Sản phẩm <span>Tổng</span></a></li>
-                                    <!-- <li><a href="#">Fresh Blackberry <span class="middle">x 02</span> <span
+                            </div>
+                            <div class="col-lg-5">
+                                <div class="order_box">
+                                    <h2>Đơn hàng của bạn</h2>
+                                    <ul class="list">
+                                        <li><a href="#">Sản phẩm <span>Tổng</span></a></li>
+                                        <!-- <li><a href="#">Fresh Blackberry <span class="middle">x 02</span> <span
                                                 class="last">$720.00</span></a></li> -->
-                                    <% totalPrice=0; dataCart.forEach((value)=>{%>
-                                        <li><a  href="#"> <%-
-                                            value.NamePrd.substring(0, 15) + "..." ;
-                                            %>
-                                            <span class="middle">x <%- value.quantity %></span> <span
-                                                class="last productPrice"><%- value.PricePrd * value.quantity %></span></a></li>
-                                    <%totalPrice +=(value.PricePrd * value.quantity)})%>
+                                        <% totalPrice=0; dataCart.forEach((value)=>{%>
+                                            <li><a href="#"> <%- value.NamePrd.substring(0, 15) + "..." ; %>
+                                                        <span class="middle">x <%- value.quantity %></span> <span
+                                                            class="last productPrice"><%- value.PricePrd *
+                                                                value.quantity %></span></a></li>
+                                            <%totalPrice +=(value.PricePrd * value.quantity)})%>
 
-                                </ul>
-                                <ul class="list list_2">
-                                    <% shipping = 50000%>
-                                    <li><a href="#">Tổng tiền hàng <span class="productPrice"><%- totalPrice%></span></a></li>
-                                    <li><a href="#">Phí vận chuyển <span class="productPrice"><%- shipping%></span></a></li>
-                                    <li><a href="#">Tổng thanh toán <span class="productPrice"><%- totalPrice+= shipping%></span></a></li>
-                                </ul>
-                                <div class="payment_item">
-                                    <div class="radion_btn">
-                                        <input type="radio" id="f-option5" name="selector">
-                                        <label for="f-option5">Thanh toán bằng tiền mặt</label>
-                                        <div class="check"></div>
+                                    </ul>
+                                    <ul class="list list_2">
+                                        <% shipping=50000%>
+                                            <li><a href="#">Tổng tiền hàng <span class="productPrice"><%-
+                                                            totalPrice%></span></a></li>
+                                            <li><a href="#">Phí vận chuyển <span class="productPrice"><%-
+                                                            shipping%></span></a></li>
+                                            <li><a href="#">Tổng thanh toán <span class="productPrice"><%-
+                                                            totalPrice+=shipping%></span></a></li>
+                                    </ul>
+                                    <div class="payment_item">
+                                        <div class="radion_btn">
+                                            <input type="radio" id="f-option5" name="payment" value="cash">
+                                            <label for="f-option5">Thanh toán bằng tiền mặt</label>
+                                            <div class="check"></div>
+                                        </div>
+                                        <p>Thanh toán bằng tiền mặt khi người vận chuyển giao hàng tới</p>
                                     </div>
-                                    <p>Thanh toán bằng tiền mặt khi người vận chuyển giao hàng tới</p>
-                                </div>
-                                <div class="payment_item active">
-                                    <div class="radion_btn">
-                                        <input type="radio" id="f-option6" name="selector">
-                                        <label for="f-option6">Thanh toán bằng ngân hàng </label>
-                                        <img src="img/product/card.jpg" alt="">
-                                        <div class="check"></div>
+                                    <div class="payment_item active">
+                                        <div class="radion_btn">
+                                            <input type="radio" id="f-option6" name="payment" value="paybank">
+                                            <label for="f-option6">Thanh toán bằng ngân hàng </label>
+                                            <img src="img/product/card.jpg" alt="">
+                                            <div class="check"></div>
+                                        </div>
+                                        <!-- <img src = "https://img.vietqr.io/image/MB-10129052003-print.png?amount=<%- totalPrice+= shipping%>&addInfo=Ck"> -->
+                                        <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
+                                            account.</p>
                                     </div>
-                                    <!-- <img src = "https://img.vietqr.io/image/MB-10129052003-print.png?amount=<%- totalPrice+= shipping%>&addInfo=Ck"> -->
-                                    <p>Pay via PayPal; you can pay with your credit card if you don’t have a PayPal
-                                        account.</p>
-                                </div>
-                                <form action='create_payment_url', method='POST'>
+                                    <!-- <form action='create_payment_url', method='POST'>                              
+                                </form> -->
                                     <input type="hidden" name="amount" value="<%- totalPrice+= shipping%>">
                                     <button class="primary-btn" href="#">Mua hàng</a>
-                                </form>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </section>
@@ -128,13 +133,3 @@
         <!-- start footer Area -->
         <%- include('footer')%>
 </body>
-<script>
-    function togglePlaceholder(input) {
-        const placeholder = input.nextElementSibling; // Tìm span gần input
-        if (input.value.trim()) {
-            placeholder.style.display = 'none'; // Ẩn placeholder
-        } else {
-            placeholder.style.display = 'block'; // Hiển thị lại nếu rỗng
-        }
-    }
-</script>

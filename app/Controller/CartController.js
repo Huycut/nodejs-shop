@@ -1,7 +1,9 @@
 const { func } = require('joi');
 const axios = require('axios');
 var cart = require('../Models/CartModels');
+const list = require('../Models/ListBuyer');
 const moment = require('moment');
+const dayjs = require('dayjs');
 const provinces = 'https://vapi.vnappmob.com/api/province/';
 var views = {
     header: 'header',
@@ -78,10 +80,13 @@ exports.districts = async (req, res) => {
 };
 exports.payment = (req, res, next) => {
     process.env.TZ = 'Asia/Ho_Chi_Minh';
-    
     let date = new Date();
     let createDate = moment(date).format('YYYYMMDDHHmmss');
-    
+    const formattedDate = dayjs(createDate, "YYYYMMDDHHmmss").format("DD/MM/YYYY HH:mm:ss");
+    list.addListBuyer(req.body.rptName,req.body.numberP,req.body.email,
+        req.body.province_name,req.body.district_name,req.body.address,
+        req.body.note,req.body.payment,formattedDate);
+    if(req.body.payment == 'paybank'){
     let ipAddr = req.headers['x-forwarded-for'] ||
         req.connection.remoteAddress ||
         req.socket.remoteAddress ||
@@ -129,6 +134,10 @@ exports.payment = (req, res, next) => {
     vnpUrl += '?' + querystring.stringify(vnp_Params, { encode: false });
 
     res.redirect(vnpUrl)
+    }else{
+        res.render('confirmation',views);
+    }
+    
         
 };
 exports.vnpayReturn = (req,res)=>{
@@ -174,4 +183,7 @@ function sortObject(obj) {
         sorted[str[key]] = encodeURIComponent(obj[str[key]]).replace(/%20/g, "+");
     }
     return sorted;
+}
+addListBuyer = (rptName,numberP,email,province,district,address,note,idname,payment,date)=>{
+    list.addListBuyer(rptName,numberP,email,province,district,address,note,idname,payment,date);
 }
