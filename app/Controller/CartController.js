@@ -135,7 +135,8 @@ exports.payment = (req, res, next) => {
 
     res.redirect(vnpUrl)
     }else{
-        res.render('confirmation',views);
+        payment = 'Thanh toán bằng tiền mặt';
+        res.render('confirmation',{ dataCart: views.dataCart, payment});
     }
     
         
@@ -162,7 +163,8 @@ exports.vnpayReturn = (req,res)=>{
 
     if(secureHash === signed){
         //Kiem tra xem du lieu trong db co hop le hay khong va thong bao ket qua
-        res.render('confirmation',views);
+        payment = 'Thanh toán bằng ngân hàng';
+        res.render('confirmation',{ dataCart: views.dataCart, payment});
         // res.render('success', {code: vnp_Params['vnp_ResponseCode']})
     } else{
         // res.render('success', {code: '97'})
