@@ -2,6 +2,7 @@ module.exports = function(router){
     var HomeController = require('../Controller/HomeController')
     var ProductController = require('../Controller/ProductController')
     var CartController = require('../Controller/CartController')
+    var AdminController = require('../Controller/admin/AdminController');
     router.get('/',HomeController.index);
     
     router.get('/login.html',HomeController.pageLogin);
@@ -29,5 +30,7 @@ module.exports = function(router){
     router.post('/create_payment_url',CartController.payment);
     router.get('/checkout/vnpay_return',CartController.vnpayReturn);
 
+    //router admin
+    router.get('/admin/home',AdminController.index);
 }
 
