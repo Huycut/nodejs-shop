@@ -6,4 +6,4 @@ var views = {
 exports.index = (req,res)=>{
     console.log(Hmodels.getColumPrd);
     res.render('admin/home',views);
-};
+};//s
