@@ -32,5 +32,7 @@ module.exports = function(router){
 
     //router admin
     router.get('/admin/home',AdminController.index);
+    router.get('/admin/ManagerProduct',AdminController.ListProduct);
+    router.get('/admin/singleProduct/:id',AdminController.SingleProduct);
 }
 
