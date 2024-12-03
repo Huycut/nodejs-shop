@@ -253,16 +253,17 @@
                                         </tfoot>
                                         <tbody>
                                             <% Stt=1; Prd.forEach(function(value){%>
-                                            <tr class="product-row" data-id="<%- value.IDPrd %>">
-                                                <td><%- Stt++ %></td>
-                                                <td><%- value.NamePrd %></td>
-                                                <td><%- value.MetaPrd %></td>
-                                                <td class="productPrice"><%- value.PricePrd %></td>
-                                                <td><img class="manager-img" src="<%- value.ImgPrd %>" alt="" style="width: 40%;"></td>
-                                            </tr>
-                                            <% }); %>
+                                                <tr class="product-row" data-id="<%- value.IDPrd %>">
+                                                    <td><%- Stt++ %></td>
+                                                    <td><%- value.NamePrd %></td>
+                                                    <td><%- value.MetaPrd %></td>
+                                                    <td class="productPrice"><%- value.PricePrd %></td>
+                                                    <td><img class="manager-img" src="<%- value.ImgPrd %>" alt=""
+                                                            style="width: 40%;"></td>
+                                                </tr>
+                                                <% }); %>
                                         </tbody>
-                                        
+
                                     </table>
                                 </div>
                             </div>
@@ -283,33 +284,63 @@
 
     </div>
     <!-- form hiển thị thông tin sản phẩm -->
-    <div id="productDetailsForm" style="display: none; position: fixed; top: 20%; left: 30%; background: #fff; padding: 20px; border: 1px solid #ccc; z-index: 1000;">
-        <h3>Chi tiết sản phẩm</h3>
+    <div id="productDetailsForm"
+        style="width: 70%; display: none; position: fixed; top: 0%; left: 20%; background: #fff; padding: 20px; border: 1px solid #ccc; z-index: 1000;">
+        <h4>Chi tiết sản phẩm</h4>
         <form id="productForm">
-            <p>
-                <strong>Tên sản phẩm:</strong> 
-                <input type="text" id="productName" name="productName" style="width: 100%;" />
-            </p>
-            <p>
-                <strong>Meta:</strong> 
-                <input type="text" id="productMeta" name="productMeta" style="width: 100%;" />
-            </p>
-            <p>
-                <strong>Giá:</strong> 
-                <input type="number" id="productPrice" name="productPrice" style="width: 100%;" />
-            </p>
-            <p>
-                <strong>Hình ảnh:</strong>
-            </p>
-            <input type="text" id="productImageInput" name="productImage" style="width: 100%;" placeholder="URL hình ảnh" />
-            <img id="productImage" src="" alt="" style="width: 22%; margin-top: 10px;" />
-            <br />
-            <button type="button" id="closeForm">Đóng</button>
-            <button type="submit" id="saveForm">Lưu</button>
+            <div>
+                <label for="productName">Tên sản phẩm:</label>
+                <input type="text" id="productName" name="productName" />
+            </div>
+            <div>
+                <label for="productMeta">Meta:</label>
+                <input type="text" id="productMeta" name="productMeta" />
+            </div>
+            <div>
+                <label for="productPrice">Giá:</label>
+                <input type="number" id="productPrice" name="productPrice" />
+            </div>
+            <div class="span-full">
+                <label for="TitlePrd">Mô tả:</label>
+                <textarea id="TitlePrd" name="TitlePrd" placeholder="Nhập mô tả chi tiết"></textarea>
+            </div>
+            <div>
+                <label for="productType">Loại:</label>
+                <select id="productType" name="productType">
+                    <option value="">Chọn loại</option>
+                    <option value="electronics">Điện tử</option>
+                    <option value="fashion">Thời trang</option>
+                    <option value="furniture">Nội thất</option>
+                    <option value="food">Thực phẩm</option>
+                </select>
+            </div>
+            <div>
+                <label for="productStyle">Kiểu:</label>
+                <select id="productStyle" name="productStyle">
+                    <option value="">Chọn kiểu</option>
+                    <option value="modern">Hiện đại</option>
+                    <option value="classic">Cổ điển</option>
+                    <option value="vintage">Cổ xưa</option>
+                    <option value="minimalist">Tối giản</option>
+                </select>
+            </div>
+
+            <div class="span-full">
+                <label for="productImageInput">Hình ảnh:</label>
+                <input type="text" id="productImageInput" name="productImage" placeholder="URL hình ảnh" />
+                <img id="productImage" src="" alt="" />
+            </div>
+            <div class="button-group span-full">
+                <button type="button" id="closeForm">Đóng</button>
+                <button type="submit" id="saveForm">Lưu</button>
+            </div>
         </form>
+
+
+
     </div>
-    
-    
+
+
 
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
@@ -336,42 +367,56 @@
     </div>
 </body>
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const rows = document.querySelectorAll(".product-row");
-    const form = document.getElementById("productDetailsForm");
+    document.addEventListener("DOMContentLoaded", function () {
+        const rows = document.querySelectorAll(".product-row");
+        const form = document.getElementById("productDetailsForm");
 
-    rows.forEach(row => {
-        row.addEventListener("click", function () {
-            const productId = this.dataset.id; // Lấy ID sản phẩm
-            fetch(`/admin/singleProduct/${productId}`)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Product not found');
-                    }
-                    return response.json();
-                })
-                .then(product => {
-                    // Hiển thị thông tin sản phẩm
-                    document.getElementById("productName").value = product.NamePrd;
-                    document.getElementById("productMeta").value = product.MetaPrd;
-                    document.getElementById("productPrice").value = product.PricePrd;
-                    document.getElementById("productImageInput").value = product.ImgPrd;
-                    document.getElementById("productImage").src = product.ImgPrd;
+        rows.forEach(row => {
+            row.addEventListener("click", function () {
+                const productId = this.dataset.id; // Lấy ID sản phẩm
+                fetch(`/admin/singleProduct/${productId}`)
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Product not found');
+                        }
+                        return response.json();
+                    })
+                    .then(result => {
+                        const product = result.product; // Lấy thông tin sản phẩm
+                        const category = result.category; // Lấy danh sách danh mục (category)
 
-                    // Hiển thị form
-                    form.style.display = "block";
-                })
-                .catch(error => {
-                    alert(error.message);
-                });
+                        // Hiển thị thông tin sản phẩm
+                        document.getElementById("productName").value = product.NamePrd;
+                        document.getElementById("productMeta").value = product.MetaPrd;
+                        document.getElementById("productPrice").value = product.PricePrd;
+                        document.getElementById("productImageInput").value = product.ImgPrd;
+                        document.getElementById("productImage").src = product.ImgPrd;
+                        document.getElementById("TitlePrd").value = product.TitlePrd;
+
+                        const productTypeSelect = document.getElementById("productType");
+                        productTypeSelect.innerHTML = '<option value="">Chọn loại</option>'; // Reset lại các option trước
+
+                        category.forEach(cat => {
+                            const option = document.createElement('option');
+                            option.value = cat.IDCate; // Gán giá trị của option là IDCategory
+                            option.textContent = cat.NameCate; // Gán tên danh mục làm text của option
+                            productTypeSelect.appendChild(option); // Thêm option vào select
+                        });
+
+                        // Hiển thị form
+                        form.style.display = "block";
+                    })
+                    .catch(error => {
+                        alert(error.message);
+                    });
+            });
+        });
+
+        // Đóng form khi nhấn nút "Đóng"
+        document.getElementById("closeForm").addEventListener("click", function () {
+            form.style.display = "none";
         });
     });
-
-    // Đóng form khi nhấn nút "Đóng"
-    document.getElementById("closeForm").addEventListener("click", function () {
-        form.style.display = "none";
-    });
-});
 
 
 </script>

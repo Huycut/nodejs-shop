@@ -20,7 +20,17 @@ exports.getListProducts = (result)=>{
     });
 };
 exports.getSingleProduct = (id,result)=>{
-    db.query('select * from product where IDPrd = ?',[id],(err,value)=>{
-        result(err,value);
+    db.query('select * from product where IDPrd = ?', [id], (err, value) => {
+        if (err) {
+            result(err, null); // Trả về lỗi nếu xảy ra trong truy vấn đầu tiên
+        }
+        
+        db.query('select * from categori', (err, valuee) => {
+            if (err) {
+                result(err, null); // Trả về lỗi nếu xảy ra trong truy vấn thứ hai
+            }
+            // Nếu cả hai truy vấn thành công, trả về cả hai kết quả
+            result(null, { product: value, category: valuee });
+        });
     });
 };

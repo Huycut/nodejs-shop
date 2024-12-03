@@ -19,9 +19,16 @@ exports.ListProduct = (req,res)=>{
 };
 exports.SingleProduct = (req,res)=>{
     Hmodels.getSingleProduct(req.params.id,(err,result)=>{
-        if (err) return res.status(500).send(err);
-        if (result.length > 0) {
-            res.json(result[0]); // Trả về sản phẩm đầu tiên
+        if (err) {
+            return res.status(500).send(err); // Trả về lỗi nếu có
+        }
+        
+        if (result.product.length > 0) {
+            // Trả về cả product và category
+            res.json({
+                product: result.product[0], // Trả về sản phẩm đầu tiên
+                category: result.category   // Trả về toàn bộ danh sách category
+            });
         } else {
             res.status(404).json({ message: 'Product not found' });
         }
