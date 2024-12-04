@@ -30,7 +30,35 @@ exports.getSingleProduct = (id,result)=>{
                 result(err, null); // Trả về lỗi nếu xảy ra trong truy vấn thứ hai
             }
             // Nếu cả hai truy vấn thành công, trả về cả hai kết quả
-            result(null, { product: value, category: valuee });
+            const parentCategories = valuee.filter(cat => cat.ParentCate === 0);
+            const childCategories = valuee.filter(cat => cat.ParentCate !== 0);
+            result(null, { product: value, category: {parentCategories,childCategories} });
         });
+    });
+};
+exports.saveProduct = (productData,callback)=>{
+    db.query(`
+        UPDATE product 
+        SET 
+            NamePrd = ?, 
+            MetaPrd = ?, 
+            PricePrd = ?, 
+            ImgPrd = ?, 
+            TitlePrd = ?, 
+            IdCate = ?, 
+            ParentCate = ?
+        WHERE IDPrd = ?
+    `,[productData.NamePrd,
+    productData.MetaPrd,
+    productData.PricePrd,
+    productData.ImgPrd,
+    productData.TitlePrd,
+    productData.IdCate,
+    productData.ParentCat,
+    productData.IDPrd],(err,result)=>{
+        if (err) {
+            return callback(err);
+        }
+        callback(null, result);
     });
 };

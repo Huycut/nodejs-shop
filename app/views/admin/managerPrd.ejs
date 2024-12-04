@@ -307,21 +307,12 @@
             <div>
                 <label for="productType">Loại:</label>
                 <select id="productType" name="productType">
-                    <option value="">Chọn loại</option>
-                    <option value="electronics">Điện tử</option>
-                    <option value="fashion">Thời trang</option>
-                    <option value="furniture">Nội thất</option>
-                    <option value="food">Thực phẩm</option>
+
                 </select>
             </div>
             <div>
                 <label for="productStyle">Kiểu:</label>
                 <select id="productStyle" name="productStyle">
-                    <option value="">Chọn kiểu</option>
-                    <option value="modern">Hiện đại</option>
-                    <option value="classic">Cổ điển</option>
-                    <option value="vintage">Cổ xưa</option>
-                    <option value="minimalist">Tối giản</option>
                 </select>
             </div>
 
@@ -370,7 +361,9 @@
     document.addEventListener("DOMContentLoaded", function () {
         const rows = document.querySelectorAll(".product-row");
         const form = document.getElementById("productDetailsForm");
-
+        let product = null; // Dùng let để có thể gán lại giá trị
+        let category = null;
+        let idPrd = null;
         rows.forEach(row => {
             row.addEventListener("click", function () {
                 const productId = this.dataset.id; // Lấy ID sản phẩm
@@ -382,9 +375,9 @@
                         return response.json();
                     })
                     .then(result => {
-                        const product = result.product; // Lấy thông tin sản phẩm
-                        const category = result.category; // Lấy danh sách danh mục (category)
-
+                        product = result.product; // Lấy thông tin sản phẩm
+                        category = result.category; // Lấy danh sách danh mục (category)
+                        idPrd = result.product.IDPrd;
                         // Hiển thị thông tin sản phẩm
                         document.getElementById("productName").value = product.NamePrd;
                         document.getElementById("productMeta").value = product.MetaPrd;
@@ -394,16 +387,30 @@
                         document.getElementById("TitlePrd").value = product.TitlePrd;
 
                         const productTypeSelect = document.getElementById("productType");
-                        productTypeSelect.innerHTML = '<option value="">Chọn loại</option>'; // Reset lại các option trước
-
-                        category.forEach(cat => {
+                        productTypeSelect.innerHTML = ''; // Reset lại các option trước
+                        const productStyleSelect = document.getElementById("productStyle");
+                        productStyleSelect.innerHTML = ''; // Reset lại các option trước
+                        category.parentCategories.forEach(cat => {
                             const option = document.createElement('option');
                             option.value = cat.IDCate; // Gán giá trị của option là IDCategory
                             option.textContent = cat.NameCate; // Gán tên danh mục làm text của option
-                            productTypeSelect.appendChild(option); // Thêm option vào select
-                        });
+                            if (product.IdCate === cat.IDCate) {
+                                option.selected = true;
 
-                        // Hiển thị form
+                                category.childCategories.forEach(cats => {
+                                    if (product.IdCate === cats.ParentCate) {
+                                        const options = document.createElement('option');
+                                        options.value = cats.IDCate; // Gán giá trị của option là IDCategory của danh mục con
+                                        options.textContent = cats.NameCate; // Gán tên danh mục con làm text của option
+                                        if (product.ParentCate === cats.IDCate) {
+                                            options.selected = true;
+                                        }
+                                        productStyleSelect.appendChild(options);
+                                    }
+                                });
+                            }
+                            productTypeSelect.appendChild(option);
+                        });
                         form.style.display = "block";
                     })
                     .catch(error => {
@@ -416,6 +423,88 @@
         document.getElementById("closeForm").addEventListener("click", function () {
             form.style.display = "none";
         });
+        document.getElementById('productType').addEventListener('change', function (event) {
+            const selectedValue = event.target.value; // Lấy giá trị của option được chọn
+            console.log(selectedValue);
+            const productTypeSelect = document.getElementById("productType");
+            productTypeSelect.innerHTML = ''; // Reset lại các option trước
+            const productStyleSelect = document.getElementById("productStyle");
+            productStyleSelect.innerHTML = ''; // Reset lại các option trước
+            category.parentCategories.forEach(cat => {
+                const option = document.createElement('option');
+                option.value = cat.IDCate; // Gán giá trị của option là IDCategory
+                option.textContent = cat.NameCate; // Gán tên danh mục làm text của option
+                if (selectedValue == cat.IDCate) {
+                    option.selected = true;
+                    category.childCategories.forEach(cats => {
+                        if (selectedValue == cats.ParentCate) {
+                            const options = document.createElement('option');
+                            options.value = cats.IDCate; // Gán giá trị của option là IDCategory của danh mục con
+                            options.textContent = cats.NameCate; // Gán tên danh mục con làm text của option
+                            if (product.ParentCate === cats.IDCate) {
+                                options.selected = true;
+                            }
+                            productStyleSelect.appendChild(options);
+                        }
+                    });
+                }
+                productTypeSelect.appendChild(option);
+            });
+        });
+        const formm = document.getElementById("productForm");
+        const saveButton = document.getElementById("saveForm");
+
+        saveButton.addEventListener("click", function (event) {
+            event.preventDefault(); // Ngăn hành vi gửi form mặc định
+
+            // Thu thập các giá trị từ các trường trong form
+            const productData = {
+                IDPrd : idPrd,
+                productName: document.getElementById("productName").value.trim(),
+                productMeta: document.getElementById("productMeta").value.trim(),
+                productPrice: parseFloat(document.getElementById("productPrice").value) || 0,
+                titlePrd: document.getElementById("TitlePrd").value.trim(),
+                productType: document.getElementById("productType").value,
+                productStyle: document.getElementById("productStyle").value,
+                productImage: document.getElementById("productImageInput").value.trim(),
+            };
+
+            // Kiểm tra giá trị đầu vào (tuỳ chọn)
+            if (!productData.productName) {
+                alert("Tên sản phẩm không được để trống.");
+                return;
+            }
+            if (productData.productPrice <= 0) {
+                alert("Giá sản phẩm phải lớn hơn 0.");
+                return;
+            }
+
+            // In ra console để kiểm tra
+            console.log("Collected Product Data:", productData);
+
+            fetch("/admin/saveProduct", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(productData),
+            })
+                .then(response => {
+                    console.log('Response status:', response.status); // Kiểm tra mã trạng thái
+                    if (!response.ok) {
+                        throw new Error('Failed to save product');
+                    }
+                    return response.json(); // Chuyển đổi dữ liệu trả về thành JSON
+                })
+                .then(data => {
+                    alert("Product saved successfully!");
+                    location.reload();// Tải lại trang
+                })
+                .catch(error => {
+                    alert("Error: " + error.message);
+                });
+        });
+
     });
 
 

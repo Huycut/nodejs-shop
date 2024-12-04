@@ -34,3 +34,34 @@ exports.SingleProduct = (req,res)=>{
         }
     });
 };
+exports.SaveProduct = (req, res) => {
+    const { IDPrd,productName, productMeta, productPrice, titlePrd, productType, productStyle, productImage } = req.body;
+    //Kiểm tra dữ liệu đầu vào
+    if (!productName || !productPrice || productPrice <= 0) {
+        return res.status(400).json({
+            message: 'Invalid input data. Please check product name and price.',
+        });
+    }
+
+    //Chuẩn bị dữ liệu để lưu vào database
+    const newProduct = {
+        IDPrd:IDPrd,
+        NamePrd: productName,
+        MetaPrd: productMeta,
+        PricePrd: productPrice,
+        TitlePrd: titlePrd,
+        IdCate: productType,
+        ParentCate: productStyle,
+        ImgPrd: productImage,
+    };
+
+    //Gọi model để lưu dữ liệu
+    Hmodels.saveProduct(newProduct, (err, result) => {
+        if (err) {
+            console.error(err);
+            return res.status(500).json({ message: 'Failed to save product.' });
+        }
+
+        res.status(200).json({ message: 'Product saved successfully!', productId: result.insertId });
+    });
+};
