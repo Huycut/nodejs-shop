@@ -318,8 +318,7 @@
 
             <div class="span-full">
                 <label for="productImageInput">Hình ảnh:</label>
-                <input type="text" id="productImageInput" name="productImage" placeholder="URL hình ảnh" />
-                <img id="productImage" src="" alt="" />
+                <input type="file" id="productImageInput" name="productImage" accept="image/*" />
             </div>
             <div class="button-group span-full">
                 <button type="button" id="closeForm">Đóng</button>
@@ -382,8 +381,8 @@
                         document.getElementById("productName").value = product.NamePrd;
                         document.getElementById("productMeta").value = product.MetaPrd;
                         document.getElementById("productPrice").value = product.PricePrd;
-                        document.getElementById("productImageInput").value = product.ImgPrd;
-                        document.getElementById("productImage").src = product.ImgPrd;
+                        //document.getElementById("productImageInput").value = product.ImgPrd;
+                        // document.getElementById("productImage").src = product.ImgPrd;
                         document.getElementById("TitlePrd").value = product.TitlePrd;
 
                         const productTypeSelect = document.getElementById("productType");
@@ -457,53 +456,56 @@
         saveButton.addEventListener("click", function (event) {
             event.preventDefault(); // Ngăn hành vi gửi form mặc định
 
-            // Thu thập các giá trị từ các trường trong form
-            const productData = {
-                IDPrd : idPrd,
-                productName: document.getElementById("productName").value.trim(),
-                productMeta: document.getElementById("productMeta").value.trim(),
-                productPrice: parseFloat(document.getElementById("productPrice").value) || 0,
-                titlePrd: document.getElementById("TitlePrd").value.trim(),
-                productType: document.getElementById("productType").value,
-                productStyle: document.getElementById("productStyle").value,
-                productImage: document.getElementById("productImageInput").value.trim(),
-            };
+            // Thu thập form data
+            const formData = new FormData();
+            formData.append("IDPrd", idPrd || "");
+            formData.append("productName", document.getElementById("productName").value.trim());
+            formData.append("productMeta", document.getElementById("productMeta").value.trim());
+            formData.append("productPrice", parseFloat(document.getElementById("productPrice").value) || 0);
+            formData.append("titlePrd", document.getElementById("TitlePrd").value.trim());
+            formData.append("productType", document.getElementById("productType").value);
+            formData.append("productStyle", document.getElementById("productStyle").value);
+
+            // Lấy tệp từ input file
+            const fileInput = document.getElementById("productImageInput");
+            if (fileInput.files.length > 0) {
+                formData.append("productImage", fileInput.files[0]);
+            } else {
+                alert("Vui lòng tải lên một hình ảnh sản phẩm.");
+                return;
+            }
 
             // Kiểm tra giá trị đầu vào (tuỳ chọn)
-            if (!productData.productName) {
+            if (!formData.get("productName")) {
                 alert("Tên sản phẩm không được để trống.");
                 return;
             }
-            if (productData.productPrice <= 0) {
+            if (formData.get("productPrice") <= 0) {
                 alert("Giá sản phẩm phải lớn hơn 0.");
                 return;
             }
 
-            // In ra console để kiểm tra
-            console.log("Collected Product Data:", productData);
-
+            // Gửi FormData qua fetch
             fetch("/admin/saveProduct", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(productData),
+                body: formData, // Gửi toàn bộ FormData
             })
                 .then(response => {
                     console.log('Response status:', response.status); // Kiểm tra mã trạng thái
                     if (!response.ok) {
-                        throw new Error('Failed to save product');
+                        throw new Error("Failed to save product");
                     }
                     return response.json(); // Chuyển đổi dữ liệu trả về thành JSON
                 })
                 .then(data => {
                     alert("Product saved successfully!");
-                    location.reload();// Tải lại trang
+                    location.reload(); // Tải lại trang
                 })
                 .catch(error => {
                     alert("Error: " + error.message);
                 });
         });
+
 
     });
 

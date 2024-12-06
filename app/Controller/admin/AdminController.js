@@ -1,4 +1,20 @@
 const Hmodels= require('../../Models/admin/HomeModels');
+const multer = require("multer");
+const path = require("path");
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+        // Đặt thư mục lưu file
+        const uploadPath = path.join(
+            "C:/Users/ADMIN/OneDrive/Desktop/shop-shoes/node js/app/public/img"
+        );
+        cb(null, uploadPath); 
+    },
+    filename: function (req, file, cb) {
+        const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1E9);
+        cb(null, uniqueSuffix + path.extname(file.originalname)); // Đặt tên file với timestamp
+    },
+});
+exports.upload = multer({ storage: storage });
 var views = {
     sidebar : 'sidebar',
     footer : 'footer',
@@ -35,33 +51,48 @@ exports.SingleProduct = (req,res)=>{
     });
 };
 exports.SaveProduct = (req, res) => {
-    const { IDPrd,productName, productMeta, productPrice, titlePrd, productType, productStyle, productImage } = req.body;
-    //Kiểm tra dữ liệu đầu vào
+    const { IDPrd, productName, productMeta, productPrice, titlePrd, productType, productStyle } = req.body;
+
+    // Kiểm tra dữ liệu đầu vào
     if (!productName || !productPrice || productPrice <= 0) {
         return res.status(400).json({
-            message: 'Invalid input data. Please check product name and price.',
+            message: "Invalid input data. Please check product name and price.",
         });
     }
 
-    //Chuẩn bị dữ liệu để lưu vào database
+    // Kiểm tra file hình ảnh
+    if (!req.file) {
+        return res.status(400).json({
+            message: "No image uploaded. Please upload a product image.",
+        });
+    }
+
+    // Đường dẫn hình ảnh sau khi lưu
+    const productImagePath = `/Img/${req.file.filename}`;
+
+    // Chuẩn bị dữ liệu để lưu vào database
     const newProduct = {
-        IDPrd:IDPrd,
+        IDPrd: IDPrd,
         NamePrd: productName,
         MetaPrd: productMeta,
         PricePrd: productPrice,
         TitlePrd: titlePrd,
         IdCate: productType,
         ParentCate: productStyle,
-        ImgPrd: productImage,
+        ImgPrd: productImagePath,
     };
 
-    //Gọi model để lưu dữ liệu
+    // Gọi model để lưu dữ liệu
     Hmodels.saveProduct(newProduct, (err, result) => {
         if (err) {
             console.error(err);
-            return res.status(500).json({ message: 'Failed to save product.' });
+            return res.status(500).json({ message: "Failed to save product." });
         }
 
-        res.status(200).json({ message: 'Product saved successfully!', productId: result.insertId });
+        res.status(200).json({
+            message: "Product saved successfully!",
+            productId: result.insertId,
+            productImage: productImagePath,
+        });
     });
 };

@@ -34,6 +34,6 @@ module.exports = function(router){
     router.get('/admin/home',AdminController.index);
     router.get('/admin/ManagerProduct',AdminController.ListProduct);
     router.get('/admin/singleProduct/:id',AdminController.SingleProduct);
-    router.post('/admin/saveProduct',AdminController.SaveProduct);
+    router.post('/admin/saveProduct',AdminController.upload.single("productImage"),AdminController.SaveProduct);
 }
 
