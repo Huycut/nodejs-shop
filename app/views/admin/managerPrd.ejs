@@ -319,6 +319,7 @@
             <div class="span-full">
                 <label for="productImageInput">Hình ảnh:</label>
                 <input type="file" id="productImageInput" name="productImage" accept="image/*" />
+                <img id="productImage" src="" alt="Xem trước hình ảnh" />
             </div>
             <div class="button-group span-full">
                 <button type="button" id="closeForm">Đóng</button>
@@ -504,6 +505,21 @@
                 .catch(error => {
                     alert("Error: " + error.message);
                 });
+        });
+        document.getElementById("productImageInput").addEventListener("change", function (event) {
+            const file = event.target.files[0]; // Lấy file từ input
+            if (file) {
+                const reader = new FileReader();
+
+                // Khi đọc file xong, hiển thị ảnh
+                reader.onload = function (e) {
+                    const img = document.getElementById("productImage");
+                    img.src = e.target.result;
+                    img.alt = file.name; // Cập nhật mô tả alt
+                };
+
+                reader.readAsDataURL(file); // Đọc file dưới dạng URL base64
+            }
         });
 
 
