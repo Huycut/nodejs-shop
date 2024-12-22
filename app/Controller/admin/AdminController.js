@@ -81,7 +81,6 @@ exports.SaveProduct = (req, res) => {
         ParentCate: productStyle,
         ImgPrd: productImagePath,
     };
-
     // Gọi model để lưu dữ liệu
     Hmodels.saveProduct(newProduct, (err, result) => {
         if (err) {

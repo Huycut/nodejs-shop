@@ -229,6 +229,7 @@
                         <div class="card shadow mb-4">
                             <div class="card-header py-3">
                                 <h6 class="m-0 font-weight-bold text-primary">Quản lí sản phẩm</h6>
+                                <button class="btn btn-primary" id="addProductBtn">Thêm sản phẩm</button>
                             </div>
                             <div class="card-body">
                                 <div class="table-responsive">
@@ -283,6 +284,57 @@
             <!-- End of Content Wrapper -->
 
     </div>
+    <!-- form thêm sản phẩm -->
+    <div id="addNewProductFormContainer"
+        style="width: 70%; display: none; position: fixed; top: 10%; left: 15%; background: #fff; padding: 20px; border: 1px solid #ccc; z-index: 1000; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);">
+        <h4>Thêm sản phẩm mới</h4>
+        <form id="addNewProductForm">
+            <div>
+                <label for="newProductName">Tên sản phẩm:</label>
+                <input type="text" id="newProductName" name="newProductName" placeholder="Nhập tên sản phẩm" required />
+            </div>
+            <div>
+                <label for="newProductPrice">Giá sản phẩm:</label>
+                <input type="number" id="newProductPrice" name="newProductPrice" placeholder="Nhập giá sản phẩm"
+                    required />
+            </div>
+            <div class="span-full">
+                <label for="newProductDescription">Mô tả sản phẩm:</label>
+                <textarea id="newProductDescription" name="newProductDescription" placeholder="Nhập mô tả sản phẩm"
+                    required></textarea>
+            </div>
+            <div>
+                <label for="newProductCategory">Danh mục:</label>
+                <select id="newProductCategory" name="newProductCategory" required>
+                    <option value="">Chọn danh mục</option>
+                    <option value="electronics">Điện tử</option>
+                    <option value="fashion">Thời trang</option>
+                    <option value="home">Đồ gia dụng</option>
+                </select>
+            </div>
+            <div>
+                <label for="newProductStyle">Phong cách:</label>
+                <select id="newProductStyle" name="newProductStyle" required>
+                    <option value="">Chọn phong cách</option>
+                    <option value="modern">Hiện đại</option>
+                    <option value="classic">Cổ điển</option>
+                </select>
+            </div>
+            <div class="span-full">
+                <label for="newProductImage">Hình ảnh:</label>
+                <input type="file" id="newProductImage" name="newProductImage" accept="image/*" required />
+                <img id="newProductImagePreview" src="" alt="Xem trước hình ảnh"
+                    style="max-width: 100px; display: none;" />
+            </div>
+            <div class="button-group span-full">
+                <button type="button" id="cancelAddNewProductForm" style="margin-right: 10px;">Hủy</button>
+                <button type="submit" id="submitAddNewProductForm">Thêm sản phẩm</button>
+            </div>
+        </form>
+    </div>
+
+
+
     <!-- form hiển thị thông tin sản phẩm -->
     <div id="productDetailsForm"
         style="width: 70%; display: none; position: fixed; top: 0%; left: 20%; background: #fff; padding: 20px; border: 1px solid #ccc; z-index: 1000;">
@@ -326,9 +378,6 @@
                 <button type="submit" id="saveForm">Lưu</button>
             </div>
         </form>
-
-
-
     </div>
 
 
@@ -358,6 +407,66 @@
     </div>
 </body>
 <script>
+
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const addNewProductFormContainer = document.getElementById('addNewProductFormContainer');
+        const cancelAddNewProductForm = document.getElementById('cancelAddNewProductForm');
+        const addNewProductForm = document.getElementById('addNewProductForm');
+        const newProductImage = document.getElementById('newProductImage');
+        const newProductImagePreview = document.getElementById('newProductImagePreview');
+
+        // Hiển thị form thêm sản phẩm
+        document.getElementById('addProductBtn').addEventListener('click', () => {
+            addNewProductFormContainer.style.display = 'block';
+        });
+
+        // Đóng form thêm sản phẩm
+        cancelAddNewProductForm.addEventListener('click', () => {
+            addNewProductFormContainer.style.display = 'none';
+            addNewProductForm.reset();
+            newProductImagePreview.style.display = 'none';
+        });
+
+        // Xử lý xem trước hình ảnh
+        newProductImage.addEventListener('change', function () {
+            const file = this.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    newProductImagePreview.src = e.target.result;
+                    newProductImagePreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Xử lý gửi form
+        addNewProductForm.addEventListener('submit', function (event) {
+            event.preventDefault();
+            const formData = new FormData(addNewProductForm);
+
+            const productDetails = {
+                name: formData.get('newProductName'),
+                meta: formData.get('newProductMeta'),
+                price: formData.get('newProductPrice'),
+                description: formData.get('newProductDescription'),
+                category: formData.get('newProductCategory'),
+                style: formData.get('newProductStyle'),
+            };
+
+            console.log('Sản phẩm mới:', productDetails);
+
+            // Ẩn form sau khi xử lý
+            addNewProductFormContainer.style.display = 'none';
+            addNewProductForm.reset();
+            newProductImagePreview.style.display = 'none';
+
+            // Thêm logic để gửi dữ liệu lên server tại đây
+        });
+    });
+
+    // sửa sản phẩm
     document.addEventListener("DOMContentLoaded", function () {
         const rows = document.querySelectorAll(".product-row");
         const form = document.getElementById("productDetailsForm");
@@ -378,12 +487,13 @@
                         product = result.product; // Lấy thông tin sản phẩm
                         category = result.category; // Lấy danh sách danh mục (category)
                         idPrd = result.product.IDPrd;
+                        console.log(product);
                         // Hiển thị thông tin sản phẩm
                         document.getElementById("productName").value = product.NamePrd;
                         document.getElementById("productMeta").value = product.MetaPrd;
                         document.getElementById("productPrice").value = product.PricePrd;
-                        //document.getElementById("productImageInput").value = product.ImgPrd;
-                        // document.getElementById("productImage").src = product.ImgPrd;
+                        // document.getElementById("productImageInput").value = product.ImgPrd;
+                        document.getElementById("productImage").src = product.ImgPrd;
                         document.getElementById("TitlePrd").value = product.TitlePrd;
 
                         const productTypeSelect = document.getElementById("productType");
@@ -485,7 +595,6 @@
                 alert("Giá sản phẩm phải lớn hơn 0.");
                 return;
             }
-
             // Gửi FormData qua fetch
             fetch("/admin/saveProduct", {
                 method: "POST",

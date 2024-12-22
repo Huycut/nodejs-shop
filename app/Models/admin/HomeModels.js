@@ -54,7 +54,7 @@ exports.saveProduct = (productData,callback)=>{
     productData.ImgPrd,
     productData.TitlePrd,
     productData.IdCate,
-    productData.ParentCat,
+    productData.ParentCate,
     productData.IDPrd],(err,result)=>{
         if (err) {
             return callback(err);
