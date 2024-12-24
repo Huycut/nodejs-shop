@@ -33,7 +33,8 @@ module.exports = function(router){
     //router admin
     router.get('/admin/home',AdminController.index);
     router.get('/admin/ManagerProduct',AdminController.ListProduct);
+    router.get('/categories/:parentId',AdminController.getParentCate);
     router.get('/admin/singleProduct/:id',AdminController.SingleProduct);
-    router.post('/admin/saveProduct',AdminController.upload.single("productImage"),AdminController.SaveProduct);
+    router.post('/admin/saveProduct',AdminController.upload.single("productImage"),AdminController.SaveProduct);    
 }
 

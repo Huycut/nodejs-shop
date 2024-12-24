@@ -1,13 +1,14 @@
-const Hmodels= require('../../Models/admin/HomeModels');
+const Hmodels = require('../../Models/admin/HomeModels');
 const multer = require("multer");
 const path = require("path");
+const { categori } = require('../../Models/ProducctModels');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         // Đặt thư mục lưu file
         const uploadPath = path.join(
             "C:/Users/ADMIN/OneDrive/Desktop/shop-shoes/node js/app/public/img"
         );
-        cb(null, uploadPath); 
+        cb(null, uploadPath);
     },
     filename: function (req, file, cb) {
         const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1E9);
@@ -16,29 +17,41 @@ const storage = multer.diskStorage({
 });
 exports.upload = multer({ storage: storage });
 var views = {
-    sidebar : 'sidebar',
-    footer : 'footer',
+    sidebar: 'sidebar',
+    footer: 'footer',
 }
-exports.index = (req,res)=>{
-    Hmodels.getColumPrd(value =>{
+let childCate;
+exports.index = (req, res) => {
+    Hmodels.getColumPrd(value => {
         views.totalPrd = value;
-        res.render('admin/home',views);
+        res.render('admin/home', views);
     });
-    
+
 };
-exports.ListProduct = (req,res)=>{
-    Hmodels.getListProducts((value)=>{
-        views.Prd = value;
-        res.render('admin/managerPrd',views);
-    });
-    
+exports.ListProduct = async (req, res) => {
+    try {
+        views.Prd = await Hmodels.getListProducts();
+        const category = await Hmodels.getCategory();
+        views.DataCate = category;
+        childCate = category.category.childCategories;
+        res.render('admin/managerPrd', views);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send("Internal Server Error");
+    }
 };
-exports.SingleProduct = (req,res)=>{
-    Hmodels.getSingleProduct(req.params.id,(err,result)=>{
+exports.getParentCate = (req,res) =>{
+    const parentId = req.params.parentId;
+    console.log(childCate);
+    const childCategories = childCate.filter(cat => cat.ParentCate == parentId);
+    res.json(childCategories);
+};
+exports.SingleProduct = (req, res) => {
+    Hmodels.getSingleProduct(req.params.id, (err, result) => {
         if (err) {
             return res.status(500).send(err); // Trả về lỗi nếu có
         }
-        
+
         if (result.product.length > 0) {
             // Trả về cả product và category
             res.json({

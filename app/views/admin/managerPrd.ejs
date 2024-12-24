@@ -307,17 +307,23 @@
                 <label for="newProductCategory">Danh mục:</label>
                 <select id="newProductCategory" name="newProductCategory" required>
                     <option value="">Chọn danh mục</option>
-                    <option value="electronics">Điện tử</option>
-                    <option value="fashion">Thời trang</option>
-                    <option value="home">Đồ gia dụng</option>
+                    <% DataCate.category.parentCategories.forEach(category=> { %>
+                        <option value="<%= category.IDCate %>">
+                            <%= category.NameCate %>
+                        </option>
+                        <% }); %>
                 </select>
             </div>
             <div>
                 <label for="newProductStyle">Phong cách:</label>
                 <select id="newProductStyle" name="newProductStyle" required>
                     <option value="">Chọn phong cách</option>
-                    <option value="modern">Hiện đại</option>
-                    <option value="classic">Cổ điển</option>
+
+                    <% DataCate.category.childCategories.forEach(category=> { %>
+                        <option value="<%= category.IDCate %>" data-parent="<%= category.ParentCate %>">
+                            <%= category.NameCate %>
+                        </option>
+                        <% }); %>
                 </select>
             </div>
             <div class="span-full">
@@ -415,6 +421,24 @@
         const addNewProductForm = document.getElementById('addNewProductForm');
         const newProductImage = document.getElementById('newProductImage');
         const newProductImagePreview = document.getElementById('newProductImagePreview');
+        const parentSelect = document.getElementById('newProductCategory');
+        const childSelect = document.getElementById('newProductStyle');
+
+        // Khi danh mục cha thay đổi
+        parentSelect.addEventListener('change', () => {
+            const selectedParentId = parentSelect.value;
+            fetch(`/categories/${selectedParentId}`)
+                .then(response => response.json())
+                .then(childCategories => {
+                    childSelect.innerHTML = '<option value="">Chọn phong cáchs</option>';
+                    childCategories.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.IDCate;
+                        option.textContent = category.NameCate;
+                        childSelect.appendChild(option);
+                    });
+                });
+        });
 
         // Hiển thị form thêm sản phẩm
         document.getElementById('addProductBtn').addEventListener('click', () => {
@@ -487,7 +511,6 @@
                         product = result.product; // Lấy thông tin sản phẩm
                         category = result.category; // Lấy danh sách danh mục (category)
                         idPrd = result.product.IDPrd;
-                        console.log(product);
                         // Hiển thị thông tin sản phẩm
                         document.getElementById("productName").value = product.NamePrd;
                         document.getElementById("productMeta").value = product.MetaPrd;
@@ -535,7 +558,6 @@
         });
         document.getElementById('productType').addEventListener('change', function (event) {
             const selectedValue = event.target.value; // Lấy giá trị của option được chọn
-            console.log(selectedValue);
             const productTypeSelect = document.getElementById("productType");
             productTypeSelect.innerHTML = ''; // Reset lại các option trước
             const productStyleSelect = document.getElementById("productStyle");
