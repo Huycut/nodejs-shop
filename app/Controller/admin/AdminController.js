@@ -109,15 +109,22 @@ exports.SaveProduct = (req, res) => {
     });
 };
 exports.insertPrd = (req,res)=>{
-    const newProduct = req.body; // Lấy dữ liệu sản phẩm từ client
-    newProduct.MetaPrd = toSlugWithUpperCase(newProduct.NamePrd);
+    const { NamePrd, PricePrd, TitlePrd, IdCate, ParentCate } = req.body;
+    const imageFile = req.file;    const MetaPrd = toSlugWithUpperCase(NamePrd);
     // Đường dẫn hình ảnh sau khi lưu
     const productImagePath = `/Img/${req.file.filename}`;
-    newProduct.ImgPrd = productImagePath;
-    console.log('Sản phẩm nhận được:', newProduct);
-
+    const data = {
+        NamePrd: NamePrd,
+        MetaPrd: MetaPrd,
+        PricePrd: PricePrd,
+        TitlePrd: TitlePrd,
+        IdCate: IdCate,
+        ParentCate: ParentCate,
+        ImgPrd: productImagePath,
+    };
+    Hmodels.insertPrd(data);
     // Giả lập thêm sản phẩm thành công
-    res.status(201).json({ message: 'Sản phẩm đã được thêm thành công!', product: newProduct });
+    res.json({ message: 'Thêm sản phẩm thành công!' });
 };
 function toSlugWithUpperCase(input) {// chuỗi biến kí tự có dấu thành ko có dấu
     const slug = slugify(input, {

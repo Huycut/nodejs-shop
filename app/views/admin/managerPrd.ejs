@@ -468,25 +468,28 @@
         // Xử lý gửi form
         addNewProductForm.addEventListener('submit', function (event) {
             event.preventDefault();
-            const formData = new FormData(addNewProductForm);
             const newImg = document.getElementById("newProductImage");
-            console.log(newImg.files[0]);
-            const productDetails = {
-                NamePrd: formData.get('newProductName'),
-                MetaPrd: formData.get('newProductMeta'),
-                PricePrd: formData.get('newProductPrice'),
-                TitlePrd: formData.get('newProductDescription'),
-                IdCate: formData.get('newProductCategory'),
-                ParentCate: formData.get('newProductChild'),
-                ImgPrd:newImg.files[0],
-            };
+            const formData = new FormData(); // Tạo FormData để chứa dữ liệu
 
+            // Thêm dữ liệu văn bản vào FormData
+            formData.append('NamePrd', document.querySelector('[name="newProductName"]').value);
+            formData.append('PricePrd', document.querySelector('[name="newProductPrice"]').value);
+            formData.append('TitlePrd', document.querySelector('[name="newProductDescription"]').value);
+            formData.append('IdCate', document.querySelector('[name="newProductCategory"]').value);
+            formData.append('ParentCate', document.querySelector('[name="newProductChild"]').value);
+
+            // Thêm file hình ảnh vào FormData
+            if (newImg.files[0]) {
+                formData.append('ImgPrd', newImg.files[0]);
+            } else {
+                alert('Vui lòng chọn hình ảnh!');
+                return; // Dừng lại nếu không có hình ảnh
+            }
+
+            // Gửi FormData qua fetch
             fetch('/admin/managerPrd/add', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json', // Xác định định dạng JSON
-                },
-                body: JSON.stringify(productDetails), // Chuyển dữ liệu sản phẩm thành JSON
+                body: formData, // Gửi toàn bộ FormData
             })
                 .then(response => {
                     if (!response.ok) {
@@ -496,17 +499,15 @@
                 })
                 .then(data => {
                     console.log('Phản hồi từ server:', data);
-                    alert('Thêm sản phẩm thành công!'); // Thông báo thành công
-
-                    // Ẩn form sau khi xử lý
-                    addNewProductFormContainer.style.display = 'none';
-                    addNewProductForm.reset();
-                    newProductImagePreview.style.display = 'none';
+                    alert('Thêm sản phẩm thành công!');
+                    // Reset form nếu cần thiết
                 })
                 .catch(error => {
                     console.error('Lỗi:', error);
                     alert('Không thể thêm sản phẩm. Vui lòng thử lại.');
                 });
+
+
         });
     });
 
