@@ -79,3 +79,19 @@ exports.saveProduct = (productData, callback) => {
         callback(null, result);
     });
 };
+exports.insertPrd = (productData)=>{
+    db.query(`INSERT INTO product 
+    (NamePrd, MetaPrd, PricePrd, ImgPrd, TitlePrd, IdCate, ParentCate) 
+    VALUES (?, ?, ?, ?, ?, ?, ?)
+    `,[ productData.NamePrd,
+        productData.MetaPrd,
+        productData.PricePrd,
+        productData.ImgPrd,
+        productData.TitlePrd,
+        productData.IdCate,
+        productData.ParentCate],(err)=>{
+        if(err){
+            console.log(" lỗi khi thêm sản phẩm ",err);
+        }
+      });
+};

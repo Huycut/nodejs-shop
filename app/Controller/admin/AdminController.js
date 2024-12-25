@@ -1,6 +1,7 @@
 const Hmodels = require('../../Models/admin/HomeModels');
 const multer = require("multer");
 const path = require("path");
+const slugify = require('slugify');
 const { categori } = require('../../Models/ProducctModels');
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
@@ -42,7 +43,6 @@ exports.ListProduct = async (req, res) => {
 };
 exports.getParentCate = (req,res) =>{
     const parentId = req.params.parentId;
-    console.log(childCate);
     const childCategories = childCate.filter(cat => cat.ParentCate == parentId);
     res.json(childCategories);
 };
@@ -108,3 +108,21 @@ exports.SaveProduct = (req, res) => {
         });
     });
 };
+exports.insertPrd = (req,res)=>{
+    const newProduct = req.body; // Lấy dữ liệu sản phẩm từ client
+    newProduct.MetaPrd = toSlugWithUpperCase(newProduct.NamePrd);
+    // Đường dẫn hình ảnh sau khi lưu
+    const productImagePath = `/Img/${req.file.filename}`;
+    newProduct.ImgPrd = productImagePath;
+    console.log('Sản phẩm nhận được:', newProduct);
+
+    // Giả lập thêm sản phẩm thành công
+    res.status(201).json({ message: 'Sản phẩm đã được thêm thành công!', product: newProduct });
+};
+function toSlugWithUpperCase(input) {// chuỗi biến kí tự có dấu thành ko có dấu
+    const slug = slugify(input, {
+      lower: true,   // Chuyển thành chữ thường
+      strict: true   // Loại bỏ ký tự đặc biệt
+    });
+    return slug.replace(/(^|[-])\w/g, match => match.toUpperCase());
+  }

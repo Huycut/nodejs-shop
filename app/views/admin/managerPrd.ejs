@@ -315,8 +315,8 @@
                 </select>
             </div>
             <div>
-                <label for="newProductStyle">Phong cách:</label>
-                <select id="newProductStyle" name="newProductStyle" required>
+                <label for="newProductChild">Phong cách:</label>
+                <select id="newProductChild" name="newProductChild" required>
                     <option value="">Chọn phong cách</option>
 
                     <% DataCate.category.childCategories.forEach(category=> { %>
@@ -422,7 +422,7 @@
         const newProductImage = document.getElementById('newProductImage');
         const newProductImagePreview = document.getElementById('newProductImagePreview');
         const parentSelect = document.getElementById('newProductCategory');
-        const childSelect = document.getElementById('newProductStyle');
+        const childSelect = document.getElementById('newProductChild');
 
         // Khi danh mục cha thay đổi
         parentSelect.addEventListener('change', () => {
@@ -469,24 +469,44 @@
         addNewProductForm.addEventListener('submit', function (event) {
             event.preventDefault();
             const formData = new FormData(addNewProductForm);
-
+            const newImg = document.getElementById("newProductImage");
+            console.log(newImg.files[0]);
             const productDetails = {
-                name: formData.get('newProductName'),
-                meta: formData.get('newProductMeta'),
-                price: formData.get('newProductPrice'),
-                description: formData.get('newProductDescription'),
-                category: formData.get('newProductCategory'),
-                style: formData.get('newProductStyle'),
+                NamePrd: formData.get('newProductName'),
+                MetaPrd: formData.get('newProductMeta'),
+                PricePrd: formData.get('newProductPrice'),
+                TitlePrd: formData.get('newProductDescription'),
+                IdCate: formData.get('newProductCategory'),
+                ParentCate: formData.get('newProductChild'),
+                ImgPrd:newImg.files[0],
             };
 
-            console.log('Sản phẩm mới:', productDetails);
+            fetch('/admin/managerPrd/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', // Xác định định dạng JSON
+                },
+                body: JSON.stringify(productDetails), // Chuyển dữ liệu sản phẩm thành JSON
+            })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Có lỗi xảy ra khi gửi dữ liệu!');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    console.log('Phản hồi từ server:', data);
+                    alert('Thêm sản phẩm thành công!'); // Thông báo thành công
 
-            // Ẩn form sau khi xử lý
-            addNewProductFormContainer.style.display = 'none';
-            addNewProductForm.reset();
-            newProductImagePreview.style.display = 'none';
-
-            // Thêm logic để gửi dữ liệu lên server tại đây
+                    // Ẩn form sau khi xử lý
+                    addNewProductFormContainer.style.display = 'none';
+                    addNewProductForm.reset();
+                    newProductImagePreview.style.display = 'none';
+                })
+                .catch(error => {
+                    console.error('Lỗi:', error);
+                    alert('Không thể thêm sản phẩm. Vui lòng thử lại.');
+                });
         });
     });
 

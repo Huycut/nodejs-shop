@@ -35,6 +35,7 @@ module.exports = function(router){
     router.get('/admin/ManagerProduct',AdminController.ListProduct);
     router.get('/categories/:parentId',AdminController.getParentCate);
     router.get('/admin/singleProduct/:id',AdminController.SingleProduct);
-    router.post('/admin/saveProduct',AdminController.upload.single("productImage"),AdminController.SaveProduct);    
+    router.post('/admin/saveProduct',AdminController.upload.single("productImage"),AdminController.SaveProduct);//router lưu khi chính sửa sp
+    router.post('/admin/managerPrd/add',AdminController.upload.single("ImgPrd"),AdminController.insertPrd);// router thêm sản phẩmphẩm
 }
 
