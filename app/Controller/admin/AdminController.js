@@ -73,16 +73,6 @@ exports.SaveProduct = (req, res) => {
         });
     }
 
-    // Kiểm tra file hình ảnh
-    if (!req.file) {
-        return res.status(400).json({
-            message: "No image uploaded. Please upload a product image.",
-        });
-    }
-
-    // Đường dẫn hình ảnh sau khi lưu
-    const productImagePath = `/Img/${req.file.filename}`;
-
     // Chuẩn bị dữ liệu để lưu vào database
     const newProduct = {
         IDPrd: IDPrd,
@@ -92,8 +82,11 @@ exports.SaveProduct = (req, res) => {
         TitlePrd: titlePrd,
         IdCate: productType,
         ParentCate: productStyle,
-        ImgPrd: productImagePath,
     };
+    if (req.file) {
+        const productImagePath = `/Img/${req.file.filename}`;
+        newProduct.ImgPrd = productImagePath;
+    }
     // Gọi model để lưu dữ liệu
     Hmodels.saveProduct(newProduct, (err, result) => {
         if (err) {
@@ -103,8 +96,6 @@ exports.SaveProduct = (req, res) => {
 
         res.status(200).json({
             message: "Product saved successfully!",
-            productId: result.insertId,
-            productImage: productImagePath,
         });
     });
 };

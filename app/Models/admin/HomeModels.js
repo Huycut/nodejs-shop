@@ -54,30 +54,62 @@ exports.getSingleProduct = (id, result) => {
     });
 };
 exports.saveProduct = (productData, callback) => {
-    db.query(`
-        UPDATE product 
-        SET 
-            NamePrd = ?, 
-            MetaPrd = ?, 
-            PricePrd = ?, 
-            ImgPrd = ?, 
-            TitlePrd = ?, 
-            IdCate = ?, 
-            ParentCate = ?
-        WHERE IDPrd = ?
-    `, [productData.NamePrd,
-    productData.MetaPrd,
-    productData.PricePrd,
-    productData.ImgPrd,
-    productData.TitlePrd,
-    productData.IdCate,
-    productData.ParentCate,
-    productData.IDPrd], (err, result) => {
+    let sql = '';
+    let params = [];
+    
+    if (productData.ImgPrd) {
+        sql = `
+            UPDATE product 
+            SET 
+                NamePrd = ?, 
+                MetaPrd = ?, 
+                PricePrd = ?, 
+                ImgPrd = ?, 
+                TitlePrd = ?, 
+                IdCate = ?, 
+                ParentCate = ?
+            WHERE IDPrd = ?
+        `;
+        params = [
+            productData.NamePrd,
+            productData.MetaPrd,
+            productData.PricePrd,
+            productData.ImgPrd,
+            productData.TitlePrd,
+            productData.IdCate,
+            productData.ParentCate,
+            productData.IDPrd
+        ];
+    } else {
+        sql = `
+            UPDATE product 
+            SET 
+                NamePrd = ?, 
+                MetaPrd = ?, 
+                PricePrd = ?, 
+                TitlePrd = ?, 
+                IdCate = ?, 
+                ParentCate = ?
+            WHERE IDPrd = ?
+        `;
+        params = [
+            productData.NamePrd,
+            productData.MetaPrd,
+            productData.PricePrd,
+            productData.TitlePrd,
+            productData.IdCate,
+            productData.ParentCate,
+            productData.IDPrd
+        ];
+    }
+    
+    db.query(sql, params, (err, result) => {
         if (err) {
             return callback(err);
         }
         callback(null, result);
     });
+    
 };
 exports.insertPrd = (productData)=>{
     db.query(`INSERT INTO product 

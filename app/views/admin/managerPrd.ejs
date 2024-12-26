@@ -498,9 +498,7 @@
                     return response.json();
                 })
                 .then(data => {
-                    console.log('Phản hồi từ server:', data);
-                    alert('Thêm sản phẩm thành công!');
-                    // Reset form nếu cần thiết
+                    customAlert('thêm sản phẩm thành công!','success');
                 })
                 .catch(error => {
                     console.error('Lỗi:', error);
@@ -624,20 +622,7 @@
             const fileInput = document.getElementById("productImageInput");
             if (fileInput.files.length > 0) {
                 formData.append("productImage", fileInput.files[0]);
-            } else {
-                alert("Vui lòng tải lên một hình ảnh sản phẩm.");
-                return;
-            }
-
-            // Kiểm tra giá trị đầu vào (tuỳ chọn)
-            if (!formData.get("productName")) {
-                alert("Tên sản phẩm không được để trống.");
-                return;
-            }
-            if (formData.get("productPrice") <= 0) {
-                alert("Giá sản phẩm phải lớn hơn 0.");
-                return;
-            }
+            } 
             // Gửi FormData qua fetch
             fetch("/admin/saveProduct", {
                 method: "POST",
@@ -651,8 +636,7 @@
                     return response.json(); // Chuyển đổi dữ liệu trả về thành JSON
                 })
                 .then(data => {
-                    alert("Product saved successfully!");
-                    location.reload(); // Tải lại trang
+                    customAlert('Sửa sản phẩm thành công','success');
                 })
                 .catch(error => {
                     alert("Error: " + error.message);
@@ -676,6 +660,15 @@
 
 
     });
-
+function customAlert(text,icon){
+    Swal.fire({
+        title: 'Thông báo',
+        text: text,
+        icon: icon,
+        confirmButtonText: 'OK'
+    }).then(() => {
+    location.reload(); // Load lại trang sau khi đóng thông báo
+});
+}
 
 </script>
